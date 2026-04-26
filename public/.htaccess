@@ -1,0 +1,17 @@
+# Включаем модуль RewriteEngine
+RewriteEngine On
+
+# 1. Редирект с www на без www (или наоборот, согласно ТЗ NFR-CODE-09)
+# Пример: редирект С www НА без www
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# 2. Если файл или директория реально существуют - отдаем их
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 3. Иначе перенаправляем всё на index.php
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Отключение просмотра директорий
+Options -Indexes
