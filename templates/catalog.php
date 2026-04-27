@@ -16,31 +16,115 @@
 <!-- Шапка -->
 <header class="header">
     <div class="container header__container">
+        <!-- Логотип -->
         <a href="index.html" class="logo">
             <img src="../public/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
         </a>
 
-        <nav class="nav header__nav">
-            <ul class="nav__list">
-                <li class="nav__item"><a href="index.html" class="nav__link" title="Главная">Главная</a></li>
-                <li class="nav__item"><a href="catalog.php" class="nav__link nav__link--active" title="Каталог">Каталог</a></li>
-                <li class="nav__item"><a href="#" class="nav__link" title="Бренды">Бренды</a></li>
-                <li class="nav__item"><a href="#" class="nav__link" title="О нас">О нас</a></li>
-            </ul>
-        </nav>
+        <!-- Центральная часть: Фильтры и Поиск -->
+        <div class="header__center">
+            <!-- Кнопка фильтров -->
+            <div class="filter-dropdown">
+                <button class="filter-dropdown__toggle" id="filterToggle" aria-label="Фильтры" aria-expanded="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    <span>Filters</span>
+                </button>
 
-        <div class="header__actions">
-            <button class="btn-icon header__search-toggle" aria-label="Поиск" title="Открыть поиск">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
+                <!-- Выпадающий список фильтров -->
+                <div class="filter-dropdown__menu" id="filterDropdown">
+                    <form class="filters-form" id="filtersForm">
+                        <!-- Бренд -->
+                        <div class="filter-row">
+                            <label class="filter-label">Brand</label>
+                            <div class="filter-select-wrapper">
+                                <button type="button" class="filter-select__prev" data-filter="brand" aria-label="Предыдущий бренд">&lt;</button>
+                                <select class="filter-select" id="filterBrand" name="brand">
+                                    <option value="">Le Que</option>
+                                    <option value="1">Maison</option>
+                                    <option value="2">Maurtin</option>
+                                    <option value="3">Nocturne</option>
+                                    <option value="4">Peak</option>
+                                </select>
+                                <button type="button" class="filter-select__next" data-filter="brand" aria-label="Следующий бренд">&gt;</button>
+                            </div>
+                        </div>
+
+                        <!-- Тип -->
+                        <div class="filter-row">
+                            <label class="filter-label">Type</label>
+                            <div class="filter-select-wrapper">
+                                <button type="button" class="filter-select__prev" data-filter="type" aria-label="Предыдущий тип">&lt;</button>
+                                <select class="filter-select" id="filterType" name="type">
+                                    <option value="">Toilet water</option>
+                                    <option value="1">Eau de Parfum</option>
+                                    <option value="2">Eau de Toilette</option>
+                                    <option value="3">Parfum</option>
+                                </select>
+                                <button type="button" class="filter-select__next" data-filter="type" aria-label="Следующий тип">&gt;</button>
+                            </div>
+                        </div>
+
+                        <!-- Цена -->
+                        <div class="filter-row">
+                            <label class="filter-label">Price</label>
+                            <div class="filter-price-range">
+                                <input type="number" class="filter-input" id="priceFrom" name="priceFrom" placeholder="0" min="0">
+                                <span class="filter-separator">—</span>
+                                <input type="number" class="filter-input" id="priceTo" name="priceTo" placeholder="100000" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Дата -->
+                        <div class="filter-row">
+                            <label class="filter-label">Date</label>
+                            <div class="filter-date-range">
+                                <input type="text" class="filter-input" id="dateFrom" name="dateFrom" placeholder="01.01.2026">
+                                <span class="filter-separator">—</span>
+                                <input type="text" class="filter-input" id="dateTo" name="dateTo" placeholder="12.2026">
+                            </div>
+                        </div>
+
+                        <div class="filters-form__actions">
+                            <button type="button" class="btn btn--text" id="resetFilters">Сбросить</button>
+                            <button type="submit" class="btn btn--primary">Применить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Поиск -->
+            <div class="header-search">
+                <div class="header-search__wrapper">
+                    <svg class="header-search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" class="header-search__input" id="searchInput" placeholder="Search" aria-label="Поиск товаров">
+                </div>
+            </div>
+        </div>
+
+        <!-- Пользователь -->
+        <div class="header__user">
+            <button class="user-btn" aria-label="Личный кабинет">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M12 14c-6 0-8 3-8 6v1h16v-1c0-3-2-6-8-6z"></path>
                 </svg>
             </button>
-            <button class="btn-icon header__filter-toggle" aria-label="Фильтры" title="Открыть фильтры">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-            </button>
+        </div>
+    </div>
+
+    <!-- Сортировка -->
+    <div class="header__sort">
+        <div class="container">
+            <div class="sort-buttons">
+                <button class="sort-btn" data-sort="price-asc">Price</button>
+                <button class="sort-btn" data-sort="popularity">Popular</button>
+                <button class="sort-btn" data-sort="novelty">Ago</button>
+            </div>
         </div>
     </div>
 </header>
@@ -55,140 +139,31 @@
 
 <!-- Основной контент -->
 <main class="main container">
-    <div class="catalog">
-        <!-- Боковая панель с фильтрами -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar__header">
-                <h2 class="sidebar__title">Фильтры</h2>
-                <button class="btn-icon sidebar__close" aria-label="Закрыть фильтры" id="closeSidebar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
+    <!-- Сетка товаров -->
+    <div class="products-grid" id="productsGrid">
+        <!-- Карточки товаров будут добавлены через JavaScript -->
+    </div>
+
+    <!-- Нижняя панель: количество товаров и пагинация -->
+    <div class="catalog-footer">
+        <div class="catalog-footer__left">
+            <span class="items-per-page-label">Items per page:</span>
+            <div class="items-per-page">
+                <button class="items-btn" data-items="6">6</button>
+                <button class="items-btn items-btn--active" data-items="12">12</button>
+                <button class="items-btn" data-items="18">18</button>
+                <button class="items-btn" data-items="24">24</button>
+                <span class="items-more">...</span>
             </div>
-
-            <form class="filters" id="filtersForm">
-                <!-- Бренд -->
-                <div class="filter-group">
-                    <h3 class="filter-group__title">Бренд</h3>
-                    <div class="filter-group__content">
-                        <select class="form-select" id="filterBrand" name="brand">
-                            <option value="">Все бренды</option>
-                            <option value="1">Maison</option>
-                            <option value="2">Maurtin</option>
-                            <option value="3">Nocturne</option>
-                            <option value="4">Peak</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Тип -->
-                <div class="filter-group">
-                    <h3 class="filter-group__title">Тип</h3>
-                    <div class="filter-group__content">
-                        <select class="form-select" id="filterType" name="type">
-                            <option value="">Все типы</option>
-                            <option value="1">Eau de Parfum</option>
-                            <option value="2">Eau de Toilette</option>
-                            <option value="3">Parfum</option>
-                            <option value="4">Toilet water</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Пол -->
-                <div class="filter-group">
-                    <h3 class="filter-group__title">Пол</h3>
-                    <div class="filter-group__content">
-                        <select class="form-select" id="filterGender" name="gender">
-                            <option value="">Все</option>
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                            <option value="unisex">Унисекс</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Цена -->
-                <div class="filter-group">
-                    <h3 class="filter-group__title">Цена</h3>
-                    <div class="filter-group__content">
-                        <div class="price-range">
-                            <div class="price-range__inputs">
-                                <input type="number" class="form-input price-range__input" id="priceFrom" placeholder="От" min="0">
-                                <span class="price-range__separator">—</span>
-                                <input type="number" class="form-input price-range__input" id="priceTo" placeholder="До" min="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Дата выпуска -->
-                <div class="filter-group">
-                    <h3 class="filter-group__title">Дата выпуска</h3>
-                    <div class="filter-group__content">
-                        <div class="date-range">
-                            <input type="date" class="form-input" id="dateFrom" placeholder="От">
-                            <input type="date" class="form-input" id="dateTo" placeholder="До">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filters__actions">
-                    <button type="button" class="btn btn--secondary" id="resetFilters">Сбросить</button>
-                    <button type="submit" class="btn btn--primary">Применить</button>
-                </div>
-            </form>
-        </aside>
-
-        <!-- Основной контент каталога -->
-        <div class="catalog__content">
-            <!-- Поиск и сортировка -->
-            <div class="catalog__toolbar">
-                <div class="search">
-                    <div class="search__wrapper">
-                        <svg class="search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search__input" id="searchInput" placeholder="Поиск по названию, описанию, характеристикам..." aria-label="Поиск товаров">
-                        <button class="search__clear" id="searchClear" aria-label="Очистить поиск" style="display: none;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="sort">
-                    <select class="form-select sort__select" id="sortSelect" aria-label="Сортировка">
-                        <option value="popularity">По популярности</option>
-                        <option value="novelty">По новизне</option>
-                        <option value="price-asc">По цене (возрастание)</option>
-                        <option value="price-desc">По цене (убывание)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Счётчик товаров -->
-            <div class="catalog__info">
-                <span class="catalog__count" id="productsCount">Найдено товаров: <strong>0</strong></span>
-            </div>
-
-            <!-- Сетка товаров -->
-            <div class="products-grid" id="productsGrid">
-                <!-- Карточки товаров будут добавлены через JavaScript -->
-            </div>
-
-            <!-- Пагинация -->
-            <nav class="pagination" id="pagination" aria-label="Навигация по страницам">
-                <ul class="pagination__list">
-                    <!-- Пагинация будет добавлена через JavaScript -->
-                </ul>
-            </nav>
         </div>
+
+        <nav class="pagination" id="pagination" aria-label="Навигация по страницам">
+            <button class="pagination__btn" id="prevPage" disabled>previous</button>
+            <div class="pagination__numbers" id="paginationNumbers">
+                <!-- Номера страниц будут добавлены через JavaScript -->
+            </div>
+            <button class="pagination__btn" id="nextPage">next</button>
+        </nav>
     </div>
 </main>
 
@@ -199,7 +174,7 @@
     </div>
 </footer>
 
-<!-- Оверлей для мобильных фильтров -->
+<!-- Оверлей для закрытия фильтров -->
 <div class="overlay" id="overlay"></div>
 
 <script src="../public/assets/js/catalog.js"></script>
