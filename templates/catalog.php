@@ -17,7 +17,7 @@
 <header class="header">
     <div class="container header__container">
         <!-- Логотип -->
-        <a href="index.html" class="logo">
+        <a class="logo">
             <img src="../public/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
         </a>
 
