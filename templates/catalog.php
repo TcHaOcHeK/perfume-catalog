@@ -41,7 +41,7 @@
                             <div class="filter-select-wrapper">
                                 <button type="button" class="filter-select__prev" data-filter="brand" aria-label="Предыдущий бренд">&lt;</button>
                                 <select class="filter-select" id="filterBrand" name="brand">
-                                    <option value="">Le Que</option>
+                                    <option value="">Все бренды</option>
                                     <option value="1">Maison</option>
                                     <option value="2">Maurtin</option>
                                     <option value="3">Nocturne</option>
@@ -57,10 +57,11 @@
                             <div class="filter-select-wrapper">
                                 <button type="button" class="filter-select__prev" data-filter="type" aria-label="Предыдущий тип">&lt;</button>
                                 <select class="filter-select" id="filterType" name="type">
-                                    <option value="">Toilet water</option>
+                                    <option value="">Все типы</option>
                                     <option value="1">Eau de Parfum</option>
                                     <option value="2">Eau de Toilette</option>
                                     <option value="3">Parfum</option>
+                                    <option value="4">Toilet water</option>
                                 </select>
                                 <button type="button" class="filter-select__next" data-filter="type" aria-label="Следующий тип">&gt;</button>
                             </div>
@@ -87,8 +88,9 @@
                         </div>
 
                         <div class="filters-form__actions">
+                            <button type="button" class="btn btn--text" id="closeFilters">Закрыть</button>
                             <button type="button" class="btn btn--text" id="resetFilters">Сбросить</button>
-                            <button type="submit" class="btn btn--primary">Применить</button>
+                            <button type="submit" class="btn btn--primary filters-form__apply">Применить</button>
                         </div>
                     </form>
                 </div>
@@ -122,7 +124,7 @@
         <div class="container">
             <div class="sort-buttons">
                 <button class="sort-btn" data-sort="price-asc">Price</button>
-                <button class="sort-btn" data-sort="popularity">Popular</button>
+                <button class="sort-btn sort-btn--active" data-sort="popularity">Popular</button>
                 <button class="sort-btn" data-sort="novelty">Ago</button>
             </div>
         </div>
@@ -173,9 +175,6 @@
         <p class="footer__text">&copy; 2026 Parfum Catalog. Все права защищены.</p>
     </div>
 </footer>
-
-<!-- Оверлей для закрытия фильтров -->
-<div class="overlay" id="overlay"></div>
 
 <script src="../public/assets/js/catalog.js"></script>
 </body>

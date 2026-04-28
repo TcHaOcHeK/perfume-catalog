@@ -1,6 +1,7 @@
 /**
  * Каталог парфюмерии
  * Модуль для отображения товаров, фильтрации, сортировки и поиска
+ * → УДАЛЁН ОВЕРЛЕЙ: dropdown закрывается только по кнопкам или Esc
  */
 
 (function() {
@@ -25,8 +26,8 @@
         searchInput: document.getElementById('searchInput'),
         filterToggle: document.getElementById('filterToggle'),
         filterDropdown: document.getElementById('filterDropdown'),
-        overlay: document.getElementById('overlay'),
         resetFilters: document.getElementById('resetFilters'),
+        closeFilters: document.getElementById('closeFilters'), // ← новая кнопка
         sortButtons: document.querySelectorAll('.sort-btn'),
         itemsButtons: document.querySelectorAll('.items-btn')
     };
@@ -232,7 +233,7 @@
 
         renderProducts();
         renderPagination();
-        closeFilterDropdown();
+        closeFilterDropdown(); // ← закрываем после применения
     }
 
     function sortProducts(products) {
@@ -349,21 +350,34 @@
         }, 300));
 
         // Фильтры - выпадающее меню
-        elements.filterToggle.addEventListener('click', toggleFilterDropdown);
-        elements.overlay.addEventListener('click', closeFilterDropdown);
+        elements.filterToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFilterDropdown();
+        });
+
+        // Кнопки внутри dropdown
+        elements.closeFilters.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeFilterDropdown();
+        });
+
+        elements.resetFilters.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetAllFilters();
+        });
 
         // Форма фильтров
         elements.filtersForm.addEventListener('submit', (e) => {
             e.preventDefault();
             updateFiltersFromForm();
             applyFilters();
+            // closeFilterDropdown() вызывается внутри applyFilters()
         });
-
-        elements.resetFilters.addEventListener('click', resetAllFilters);
 
         // Навигация по фильтрам (стрелки)
         document.querySelectorAll('.filter-select__prev, .filter-select__next').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const filterType = e.target.dataset.filter;
                 const direction = e.target.classList.contains('filter-select__prev') ? -1 : 1;
                 navigateFilter(filterType, direction);
@@ -372,7 +386,8 @@
 
         // Сортировка
         elements.sortButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 elements.sortButtons.forEach(b => b.classList.remove('sort-btn--active'));
                 btn.classList.add('sort-btn--active');
                 state.sortBy = btn.dataset.sort;
@@ -382,7 +397,8 @@
 
         // Количество товаров на странице
         elements.itemsButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 elements.itemsButtons.forEach(b => b.classList.remove('items-btn--active'));
                 btn.classList.add('items-btn--active');
                 state.itemsPerPage = parseInt(btn.dataset.items);
@@ -393,7 +409,8 @@
         });
 
         // Пагинация
-        elements.prevPage.addEventListener('click', () => {
+        elements.prevPage.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (state.currentPage > 1) {
                 state.currentPage--;
                 renderProducts();
@@ -402,7 +419,8 @@
             }
         });
 
-        elements.nextPage.addEventListener('click', () => {
+        elements.nextPage.addEventListener('click', (e) => {
+            e.stopPropagation();
             const totalPages = Math.ceil(state.filteredProducts.length / state.itemsPerPage);
             if (state.currentPage < totalPages) {
                 state.currentPage++;
@@ -414,6 +432,7 @@
 
         elements.paginationNumbers.addEventListener('click', (e) => {
             if (e.target.classList.contains('pagination__number')) {
+                e.stopPropagation();
                 const page = parseInt(e.target.dataset.page);
                 if (page && page !== state.currentPage) {
                     state.currentPage = page;
@@ -424,9 +443,9 @@
             }
         });
 
-        // Закрытие dropdown при клике вне
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.filter-dropdown')) {
+        // Закрытие на Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && elements.filterDropdown.classList.contains('filter-dropdown__menu--active')) {
                 closeFilterDropdown();
             }
         });
@@ -443,14 +462,15 @@
 
     function openFilterDropdown() {
         elements.filterDropdown.classList.add('filter-dropdown__menu--active');
-        elements.overlay.classList.add('overlay--active');
         elements.filterToggle.setAttribute('aria-expanded', 'true');
+        // Запрещаем прокрутку страницы при открытом dropdown
+        document.body.style.overflow = 'hidden';
     }
 
     function closeFilterDropdown() {
         elements.filterDropdown.classList.remove('filter-dropdown__menu--active');
-        elements.overlay.classList.remove('overlay--active');
         elements.filterToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = ''; // восстанавливаем прокрутку
     }
 
     function navigateFilter(filterType, direction) {
@@ -504,7 +524,7 @@
             }
         });
 
-        applyFilters();
+        applyFilters(); // ← закроет dropdown автоматически
     }
 
     // ========================================
@@ -552,13 +572,6 @@
     }
 
     function setupAccessibility() {
-        // Escape для закрытия dropdown
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeFilterDropdown();
-            }
-        });
-
         // Trap focus в фильтре
         elements.filterDropdown.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
