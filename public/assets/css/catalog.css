@@ -553,7 +553,7 @@
 @media screen and (max-width: 1024px) {
     .header__container {
         flex-wrap: nowrap;
-        justify-content: center; /* ← ЦЕНТРИРОВАНИЕ ВСЕХ ЭЛЕМЕНТОВ */
+        justify-content: center;
         align-items: center;
         gap: var(--spacing-md);
         padding: var(--spacing-md) var(--spacing-sm);
@@ -577,14 +577,14 @@
     .filter-dropdown__toggle {
         padding: var(--spacing-sm) var(--spacing-md);
         font-size: 0.875rem;
-        height: 44px; /* ← ФИКСИРОВАННАЯ ВЫСОТА */
+        height: 44px;
         display: flex;
         align-items: center;
     }
 
     .header-search__wrapper {
         width: 220px;
-        height: 44px; /* ← ТАКАЯ ЖЕ ВЫСОТА КАК У ФИЛЬТРА */
+        height: 44px;
         display: flex;
         align-items: center;
     }
@@ -607,7 +607,7 @@
     }
 
     .user-btn {
-        height: 44px; /* ← ТАКАЯ ЖЕ ВЫСОТА */
+        height: 44px;
         width: 44px;
         display: flex;
         align-items: center;
@@ -617,6 +617,35 @@
         padding: 0;
     }
 
+    /* ЦЕНТРИРОВАНИЕ DROPDOWN НА ПЛАНШЕТАХ */
+    .filter-dropdown {
+        position: static;
+    }
+
+    .filter-dropdown__menu {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.95);
+        min-width: 320px;
+        width: 90%;
+        max-width: 400px;
+        max-height: 90vh;
+        overflow-y: auto;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-fast);
+    }
+
+    .filter-dropdown__menu--active {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
     .products-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -624,24 +653,40 @@
     .product-card__image-wrapper {
         width: 40%;
     }
+
+    /* Оверлей для планшетов */
+    .filter-dropdown::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-fast);
+    }
+
+    .filter-dropdown:has(.filter-dropdown__menu--active)::before {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 /* Мобильные (до 768px) */
 @media screen and (max-width: 768px) {
     .header__container {
         flex-wrap: nowrap;
-        justify-content: center; /* ← ЦЕНТРИРОВАНИЕ */
+        justify-content: center;
         align-items: center;
         gap: var(--spacing-sm);
         padding: var(--spacing-sm) var(--spacing-sm);
     }
 
     .logo {
-        display: none; /* ← СКРЫВАЕМ ЛОГОТИП НА МОБИЛЬНЫХ или можно оставить */
-        /* Если нужно оставить логотип, раскомментируйте: */
-        /* order: 1;
-        width: 45px;
-        height: 45px; */
+        display: none;
     }
 
     .logo__image {
@@ -661,14 +706,14 @@
     .filter-dropdown__toggle {
         padding: var(--spacing-sm) var(--spacing-md);
         font-size: 0.8125rem;
-        height: 40px; /* ← ФИКСИРОВАННАЯ ВЫСОТА */
+        height: 40px;
         display: flex;
         align-items: center;
         white-space: nowrap;
     }
 
     .filter-dropdown__toggle span {
-        display: inline; /* ← ПОКАЗЫВАЕМ ТЕКСТ */
+        display: inline;
     }
 
     .header-search {
@@ -677,7 +722,7 @@
 
     .header-search__wrapper {
         width: 140px;
-        height: 40px; /* ← ТАКАЯ ЖЕ ВЫСОТА КАК У ФИЛЬТРА */
+        height: 40px;
         display: flex;
         align-items: center;
     }
@@ -702,7 +747,7 @@
     }
 
     .user-btn {
-        height: 40px; /* ← ТАКАЯ ЖЕ ВЫСОТА */
+        height: 40px;
         width: 40px;
         display: flex;
         align-items: center;
@@ -746,12 +791,21 @@
         max-height: 120px;
     }
 
+    /* ЦЕНТРИРОВАНИЕ DROPDOWN НА МОБИЛЬНЫХ */
     .filter-dropdown__menu {
-        min-width: 280px;
+        position: fixed;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 2 * var(--spacing-md));
-        max-width: 320px;
+        transform: translate(-50%, -50%) scale(0.95);
+        min-width: auto;
+        width: 85%;
+        max-width: 340px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .filter-dropdown__menu--active {
+        transform: translate(-50%, -50%) scale(1);
     }
 
     .catalog-footer {
@@ -796,7 +850,7 @@
     }
 
     .filter-dropdown__toggle span {
-        display: none; /* ← СКРЫВАЕМ ТЕКСТ НА ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНАХ */
+        display: none;
     }
 
     .header-search__wrapper {
@@ -825,11 +879,11 @@
         height: 18px;
     }
 
+    /* ЦЕНТРИРОВАНИЕ DROPDOWN НА ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНАХ */
     .filter-dropdown__menu {
-        width: 95%;
-        left: 50%;
-        transform: translateX(-50%);
-        min-width: auto;
+        width: 90%;
+        max-width: none;
+        padding: var(--spacing-sm);
     }
 
     .product-card__sku {
@@ -849,7 +903,6 @@
         padding: var(--spacing-xs);
     }
 }
-
 /* ========================================
    Версия для печати
    ======================================== */
