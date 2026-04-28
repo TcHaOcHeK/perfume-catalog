@@ -550,22 +550,36 @@
    Адаптивность
    ======================================== */
 
-/* Планшет */
+/* ========================================
+   Адаптивность
+   ======================================== */
+
+/* Планшет (до 1024px) — компактная шапка, без min-width */
 @media screen and (max-width: 1024px) {
     .header__container {
         flex-wrap: wrap;
-        justify-content: space-between; /* ← на планшете снова растягиваем */
+        justify-content: space-between; /* оставляем растягивание, но делаем гибким */
+        gap: var(--spacing-sm); /* уменьшаем отступ между элементами */
     }
 
     .header__center {
-        order: 3;
-        width: 100%;
+        order: 2;
+        width: auto; /* ← УБРАТЬ min-width и width: fit-content */
+        flex: 1;
         max-width: 100%;
-        min-width: auto;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs); /* ещё меньше отступов */
+    }
+
+    .filter-dropdown__toggle {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.875rem;
     }
 
     .header-search__wrapper {
-        width: 100%; /* ← на планшете поиск занимает всю ширину */
+        width: 200px; /* ← уменьшаем ширину поиска на планшете */
+        min-width: 180px;
     }
 
     .products-grid {
@@ -582,19 +596,60 @@
     }
 }
 
-/* Мобильные */
+/* Мобильные (до 768px) — логотип слева, фильтр+поиск в центре/справа, пользователь — крайний справа */
 @media screen and (max-width: 768px) {
+    .header__container {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm) 0;
+    }
+
     .logo__image {
         width: 50px;
         height: 50px;
     }
 
+    .header__center {
+        order: 2;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        flex: 1;
+        max-width: calc(100% - 100px); /* оставляем место для логотипа + пользователя */
+    }
+
+    .filter-dropdown__toggle {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.8125rem; /* 13px */
+        gap: var(--spacing-xs);
+    }
+
     .filter-dropdown__toggle span {
-        display: none;
+        display: none; /* скрываем текст — оставляем только иконку */
+    }
+
+    .header-search {
+        flex-shrink: 0;
+    }
+
+    .header-search__wrapper {
+        width: 160px; /* ещё меньше — под мобильный экран */
+        min-width: auto;
     }
 
     .header-search__input {
-        font-size: 0.875rem;
+        padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) 36px;
+        font-size: 0.8125rem;
+    }
+
+    .header-search__icon {
+        left: var(--spacing-sm);
+    }
+
+    .header__user {
+        order: 3;
+        margin-left: auto; /* толкаем вправо */
     }
 
     .sort-buttons {
@@ -619,8 +674,11 @@
     }
 
     .filter-dropdown__menu {
-        min-width: 280px;
-        left: -20px;
+        min-width: 260px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 2 * var(--spacing-md));
+        max-width: 320px;
     }
 
     .catalog-footer__left {
@@ -634,27 +692,35 @@
     }
 
     .pagination__number {
-        min-width: 28px;
-        padding: var(--spacing-xs);
+        min-width: 24px;
+        padding: var(--spacing-xs) var(--spacing-xs);
         font-size: 0.75rem;
     }
 }
 
-/* Маленькие мобильные */
+/* Очень маленькие мобильные (до 480px) */
 @media screen and (max-width: 480px) {
-    .filter-row {
-        flex-direction: column;
-        align-items: flex-start;
+    .header__container {
         gap: var(--spacing-xs);
+        padding: var(--spacing-xs) 0;
     }
 
-    .filter-label {
-        min-width: auto;
+    .header__center {
+        max-width: calc(100% - 80px);
     }
 
-    .filter-price-range,
-    .filter-date-range {
-        width: 100%;
+    .header-search__wrapper {
+        width: 140px;
+    }
+
+    .filter-dropdown__menu {
+        width: 95%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .product-card__sku {
+        font-size: 0.5625rem; /* 9px */
     }
 
     .items-per-page-label {
