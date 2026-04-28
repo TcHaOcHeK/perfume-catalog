@@ -383,17 +383,20 @@
 
 .product-card__image-wrapper {
     width: 40%;
-    padding: var(--spacing-md);
+    padding: 0; /* ← УБРАЛИ отступы */
     background-color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* ← ДОБАВИЛИ для обрезки */
+    aspect-ratio: 1 / 1; /* ← КВАДРАТНОЕ СООТНОШЕНИЕ */
 }
 
 .product-card__image {
-    max-width: 100%;
-    max-height: 180px;
-    object-fit: contain;
+    width: 100%; /* ← ЗАПОЛНЯЕТ ШИРИНУ */
+    height: 100%; /* ← ЗАПОЛНЯЕТ ВЫСОТУ */
+    object-fit: cover; /* ← ОБРЕЗАЕТ ИЗОБРАЖЕНИЕ */
+    object-position: center; /* ← ЦЕНТРИРОВАНИЕ */
 }
 
 .product-card__content {
