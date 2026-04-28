@@ -40,7 +40,7 @@
         products: [],
         filteredProducts: [],
         currentPage: 1,
-        itemsPerPage: 12,
+        itemsPerPage: 6,
         filters: {
             brand: '',
             type: '',

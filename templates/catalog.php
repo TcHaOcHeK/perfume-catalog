@@ -110,12 +110,12 @@
 
         <!-- Пользователь -->
         <div class="header__user">
-            <button class="user-btn" aria-label="Личный кабинет">
+            <a href="/perfume-catalog/public/login" class="user-btn" aria-label="Личный кабинет">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M12 14c-6 0-8 3-8 6v1h16v-1c0-3-2-6-8-6z"></path>
                 </svg>
-            </button>
+            </a>
         </div>
     </div>
 
@@ -134,7 +134,6 @@
 <!-- Хлебные крошки -->
 <nav class="breadcrumbs container" aria-label="Хлебные крошки">
     <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item"><a href="index.html" class="breadcrumbs__link" title="Главная">Главная</a></li>
         <li class="breadcrumbs__item"><span class="breadcrumbs__current">Каталог</span></li>
     </ol>
 </nav>
@@ -151,8 +150,8 @@
         <div class="catalog-footer__left">
             <span class="items-per-page-label">Items per page:</span>
             <div class="items-per-page">
-                <button class="items-btn" data-items="6">6</button>
-                <button class="items-btn items-btn--active" data-items="12">12</button>
+                <button class="items-btn items-btn--active" data-items="6">6</button> <!-- ← активная кнопка -->
+                <button class="items-btn" data-items="12">12</button>
                 <button class="items-btn" data-items="18">18</button>
                 <button class="items-btn" data-items="24">24</button>
                 <span class="items-more">...</span>

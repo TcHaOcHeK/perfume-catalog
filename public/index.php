@@ -4,13 +4,13 @@ require_once '../config/db.php';
 $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
 
 switch (true) {
-    case $url === '' || $url === 'login':
-        $pageTitle = "Регистрация";
-        require_once '../templates/login.php';
-        break;
-    case $url === 'catalog':
+    case $url === '' || $url === 'catalog':
         $pageTitle = "Каталог";
         require_once '../templates/catalog.php';
+        break;
+    case  $url === 'login':
+        $pageTitle = "Регистрация";
+        require_once '../templates/login.php';
         break;
 
     default:
