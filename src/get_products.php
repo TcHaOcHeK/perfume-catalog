@@ -129,10 +129,16 @@ function getProducts() {
         $stmt->execute($params);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // === ГЕНЕРАЦИЯ SKU: # + 8-значный id ===
+        $formattedProducts = array_map(function ($p) {
+            $p['sku'] = '#' . sprintf('%08d', $p['id']);
+            return $p;
+        }, $products);
+
         // Форматирование ответа
         $response = [
             'success' => true,
-            'products' => $products,
+            'products' => $formattedProducts,
             'pagination' => [
                 'currentPage' => $page,
                 'perPage' => $perPage,

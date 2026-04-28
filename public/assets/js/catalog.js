@@ -27,7 +27,7 @@
         filterToggle: document.getElementById('filterToggle'),
         filterDropdown: document.getElementById('filterDropdown'),
         resetFilters: document.getElementById('resetFilters'),
-        closeFilters: document.getElementById('closeFilters'), // ← новая кнопка
+        closeFilters: document.getElementById('closeFilters'),
         sortButtons: document.querySelectorAll('.sort-btn'),
         itemsButtons: document.querySelectorAll('.items-btn')
     };
@@ -80,7 +80,7 @@
             if (data.success && data.products) {
                 state.products = data.products.map(product => ({
                     id: product.id,
-                    sku: product.sku,
+                    sku: product.sku, // ← уже в формате #00000001
                     title: product.title,
                     brand: product.brand_name || 'Бренд не указан',
                     type: product.type_name || 'Тип не указан',
@@ -100,7 +100,7 @@
             }
         } catch (error) {
             console.error('Ошибка загрузки товаров:', error);
-            // Моковые данные
+            // Моковые данные — с генерацией sku
             state.products = getMockProducts();
             state.filteredProducts = [...state.products];
             renderProducts();
@@ -109,86 +109,46 @@
     }
 
     function getMockProducts() {
-        return [
-            {
-                id: 1,
-                sku: '#00000012',
-                title: 'Maison Lumeria',
-                brand: 'Maison',
-                type: 'Eau de Parfum',
-                gender: 'female',
-                price: 12000,
-                image: '../public/assets/img/maison-lumeria.jpg',
-                views: 120,
-                releaseDate: '2026-01-05',
-                description: 'Mediterranean light'
-            },
-            {
-                id: 2,
-                sku: '#00000016',
-                title: 'Mauntin Rock',
-                brand: 'Mauntin',
-                type: 'Eau de Parfum',
-                gender: 'unisex',
-                price: 16000,
-                image: '../public/assets/img/maurtin-rock.jpg',
-                views: 85,
-                releaseDate: '2025-11-20',
-                description: 'Bold composition'
-            },
-            {
-                id: 3,
-                sku: '#00000010',
-                title: 'Nocturne Iris',
-                brand: 'Nocturne',
-                type: 'Eau de Toilette',
-                gender: 'female',
-                price: 10000,
-                image: '../public/assets/img/nocturne-iris.jpg',
-                views: 200,
-                releaseDate: '2026-02-14',
-                description: 'Floral bouquet'
-            },
-            {
-                id: 4,
-                sku: '#00000020',
-                title: 'Peak Ecstasy',
-                brand: 'Peak',
-                type: 'Parfum',
-                gender: 'male',
-                price: 20000,
-                image: '../public/assets/img/peak-ecstasy.jpg',
-                views: 60,
-                releaseDate: '2025-09-10',
-                description: 'Aquatic freshness'
-            },
-            {
-                id: 5,
-                sku: '#00000010',
-                title: 'Nocturne Iris',
-                brand: 'Nocturne',
-                type: 'Eau de Toilette',
-                gender: 'female',
-                price: 10000,
-                image: '../public/assets/img/nocturne-iris.jpg',
-                views: 200,
-                releaseDate: '2026-02-14',
-                description: 'Floral bouquet'
-            },
-            {
-                id: 6,
-                sku: '#00000012',
-                title: 'Maison Lumeria',
-                brand: 'Maison',
-                type: 'Eau de Parfum',
-                gender: 'female',
-                price: 12000,
-                image: '../public/assets/img/maison-lumeria.jpg',
-                views: 120,
-                releaseDate: '2026-01-05',
-                description: 'Mediterranean light'
-            }
+        const ids = [1, 2, 3, 4, 5, 6];
+        const titles = ['Maison Lumeria', 'Mauntin Rock', 'Nocturne Iris', 'Peak Ecstasy', 'Nocturne Iris', 'Maison Lumeria'];
+        const brands = ['Maison', 'Mauntin', 'Nocturne', 'Peak', 'Nocturne', 'Maison'];
+        const types = ['Eau de Parfum', 'Eau de Parfum', 'Eau de Toilette', 'Parfum', 'Eau de Toilette', 'Eau de Parfum'];
+        const genders = ['female', 'unisex', 'female', 'male', 'female', 'female'];
+        const prices = [12000, 16000, 10000, 20000, 10000, 12000];
+        const images = [
+            '../public/assets/img/maison-lumeria.jpg',
+            '../public/assets/img/maurtin-rock.jpg',
+            '../public/assets/img/nocturne-iris.jpg',
+            '../public/assets/img/peak-ecstasy.jpg',
+            '../public/assets/img/nocturne-iris.jpg',
+            '../public/assets/img/maison-lumeria.jpg'
         ];
+        const descriptions = [
+            'Mediterranean light',
+            'Bold composition',
+            'Floral bouquet',
+            'Aquatic freshness',
+            'Floral bouquet',
+            'Mediterranean light'
+        ];
+        const releaseDates = [
+            '2026-01-05', '2025-11-20', '2026-02-14', '2025-09-10', '2026-02-14', '2026-01-05'
+        ];
+        const views = [120, 85, 200, 60, 200, 120];
+
+        return ids.map((id, i) => ({
+            id: id,
+            sku: '#' + String(id).padStart(8, '0'), // ← Генерация: #00000001, #00000002...
+            title: titles[i],
+            brand: brands[i],
+            type: types[i],
+            gender: genders[i],
+            price: prices[i],
+            image: images[i],
+            views: views[i],
+            releaseDate: releaseDates[i],
+            description: descriptions[i]
+        }));
     }
 
     // ========================================
@@ -233,7 +193,7 @@
 
         renderProducts();
         renderPagination();
-        closeFilterDropdown(); // ← закрываем после применения
+        closeFilterDropdown();
     }
 
     function sortProducts(products) {
@@ -371,7 +331,6 @@
             e.preventDefault();
             updateFiltersFromForm();
             applyFilters();
-            // closeFilterDropdown() вызывается внутри applyFilters()
         });
 
         // Навигация по фильтрам (стрелки)
@@ -463,14 +422,13 @@
     function openFilterDropdown() {
         elements.filterDropdown.classList.add('filter-dropdown__menu--active');
         elements.filterToggle.setAttribute('aria-expanded', 'true');
-        // Запрещаем прокрутку страницы при открытом dropdown
         document.body.style.overflow = 'hidden';
     }
 
     function closeFilterDropdown() {
         elements.filterDropdown.classList.remove('filter-dropdown__menu--active');
         elements.filterToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = ''; // восстанавливаем прокрутку
+        document.body.style.overflow = '';
     }
 
     function navigateFilter(filterType, direction) {
@@ -516,7 +474,6 @@
         state.sortBy = 'popularity';
         elements.searchInput.value = '';
 
-        // Сброс активной сортировки
         elements.sortButtons.forEach(btn => {
             btn.classList.remove('sort-btn--active');
             if (btn.dataset.sort === 'popularity') {
@@ -524,7 +481,7 @@
             }
         });
 
-        applyFilters(); // ← закроет dropdown автоматически
+        applyFilters();
     }
 
     // ========================================
@@ -542,7 +499,7 @@
     function getBrandNameById(id) {
         const brands = {
             '1': 'Maison',
-            '2': 'Maurtin',
+            '2': 'Mauntin',
             '3': 'Nocturne',
             '4': 'Peak'
         };
@@ -572,7 +529,6 @@
     }
 
     function setupAccessibility() {
-        // Trap focus в фильтре
         elements.filterDropdown.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 const focusableElements = elements.filterDropdown.querySelectorAll(
