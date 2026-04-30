@@ -253,7 +253,7 @@
                     <span class="product-card__brand">${product.brand}</span>
                     <span class="product-card__sku">${product.sku}</span>
                     <h3 class="product-card__title">
-                        <a href="product.html?id=${product.id}" class="product-card__link-text">${product.title}</a>
+                        <a href="product.php?id=${product.id}" class="product-card__link-text">${product.title}</a>
                     </h3>
                     <p class="product-card__price">${formatPrice(product.price)}</p>
                 </div>
