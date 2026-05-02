@@ -7,9 +7,9 @@
     min-height: 100vh;
 }
 
-/* Основной контент - убираем лишние отступы сверху */
+/* Основной контент */
 .product-main {
-    padding: 0 0 40px 0; /* Отступ только снизу */
+    padding: 0 0 40px 0;
 }
 
 .product-detail {
@@ -20,14 +20,12 @@
 }
 
 /* ========================================
-   Хлебные крошки - НАСТРОЙКА ОТСТУПОВ
+   Хлебные крошки
    ======================================== */
 
 .product-gallery .breadcrumbs {
-    /* Вот здесь настраиваем положение крошек */
-    margin-top: 40px;  /* Отступ от самого верха окна браузера */
-    padding-bottom: 15px; /* Отступ от крошек до картинки */
-
+    margin-top: 40px;
+    padding-bottom: 15px;
     margin-bottom: 0;
 }
 
@@ -75,7 +73,6 @@
 .product-gallery {
     position: sticky;
     top: 20px;
-    /* Важно: убрали margin-top отсюда, чтобы не сдвигать всё вниз */
 }
 
 .product-gallery__container {
@@ -86,21 +83,22 @@
 .product-gallery__image-wrapper {
     width: 100%;
     aspect-ratio: 1;
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     position: relative;
-    /* Убираем любые отступы внутри */
     margin: 0;
     padding: 0;
 }
 
+/* Фото выравнивается по высоте (заполняет контейнер) */
 .product-gallery__image {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 
 /* Стрелки навигации */
@@ -181,7 +179,7 @@
    ======================================== */
 
 .product-info {
-    padding: 55px 0 20px; /* Подогнали под высоту крошек + картинки */
+    padding: 55px 0 20px;
 }
 
 /* Заголовок и кнопка */
@@ -245,9 +243,11 @@
     margin: 0 0 30px 0;
 }
 
+/* ПРАВКА 1: Увеличен размер знака рубля */
 .product-info__price-currency {
-    font-size: 24px;
+    font-size: 28px;
     vertical-align: super;
+    margin-left: 5px;
 }
 
 .product-info__description {
@@ -265,6 +265,7 @@
 
 .product-characteristics {
     margin-bottom: 40px;
+    text-align: center;
 }
 
 .product-characteristics__title {
@@ -272,18 +273,23 @@
     font-weight: 600;
     color: #1E1E1E;
     margin: 0 0 20px 0;
+    text-align: center;
 }
 
+/* ПРАВКА 2: Сетка изменена на 4 колонки */
 .product-characteristics__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .characteristic-item {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    align-items: center;
 }
 
 .characteristic-item__label {
@@ -306,9 +312,9 @@
 .fragrance-pyramid {
     margin-bottom: 40px;
     padding: 30px;
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 
 .fragrance-pyramid__title {
@@ -364,8 +370,8 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(30, 30, 30, 0.1);
+    padding-top: 0;
+    border-top: none;
     font-size: 13px;
     color: #999;
 }
@@ -418,7 +424,7 @@
     }
 
     .product-gallery .breadcrumbs {
-        margin-top: 0; /* На мобильных крошки вплотную к верху */
+        margin-top: 0;
     }
 
     .product-info {
@@ -436,6 +442,11 @@
 
     .btn-catalog {
         margin-top: 10px;
+    }
+
+    /* На планшетах характеристики перестраиваются в 2 колонки для удобства */
+    .product-characteristics__grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -461,6 +472,7 @@
         font-size: 28px;
     }
 
+    /* На мобильных 1 колонка */
     .product-characteristics__grid {
         grid-template-columns: 1fr;
     }
