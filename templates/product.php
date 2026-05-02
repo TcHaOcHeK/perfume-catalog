@@ -47,21 +47,22 @@ if (!$productId) {
         <!-- Левая часть: Галерея изображений -->
         <div class="product-gallery">
             <div class="product-gallery__container">
-                <button class="product-gallery__nav product-gallery__nav--prev" aria-label="Предыдущее изображение" id="prevImage">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-
                 <div class="product-gallery__image-wrapper">
                     <img src="" alt="" class="product-gallery__image" id="productImage" itemprop="image" onerror="this.src='../public/assets/img/placeholder.svg'">
-                </div>
 
-                <button class="product-gallery__nav product-gallery__nav--next" aria-label="Следующее изображение" id="nextImage">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
+                    <!-- Стрелки теперь внутри wrapper -->
+                    <button class="product-gallery__nav product-gallery__nav--prev" aria-label="Предыдущее изображение" id="prevImage">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <button class="product-gallery__nav product-gallery__nav--next" aria-label="Следующее изображение" id="nextImage">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Миниатюры -->
@@ -72,7 +73,11 @@ if (!$productId) {
 
         <!-- Правая часть: Информация о товаре -->
         <div class="product-info">
-            <h1 class="product-info__title" itemprop="name" id="productTitle"></h1>
+            <div class="product-info__header">
+                <h1 class="product-info__title" itemprop="name" id="productTitle"></h1>
+                <a href="catalog.php" class="btn-catalog">← Back to catalog</a>
+            </div>
+
             <p class="product-info__sku" id="productSKU"></p>
             <p class="product-info__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 <span class="product-info__price-value" id="productPrice" itemprop="price"></span>
@@ -124,23 +129,14 @@ if (!$productId) {
                 </div>
             </div>
 
-            <!-- Дата добавления -->
-            <p class="product-info__date">Added on <span id="productDate"></span></p>
-
-            <!-- Кнопка назад -->
-            <div class="product-info__actions">
-                <a href="catalog.php" class="btn btn--primary">← Back to catalog</a>
+            <div class="product-info__date-wrapper">
+                <p class="footer-inline">&copy; 2026 Parfum Catalog. Все права защищены.</p>
+                <p class="product-info__date">Added on <span id="productDate"></span></p>
             </div>
         </div>
     </article>
 </main>
 
-<!-- Подвал -->
-<footer class="footer">
-    <div class="container footer__container">
-        <p class="footer__text">&copy; 2026 Parfum Catalog. Все права защищены.</p>
-    </div>
-</footer>
 
 <script>
     // Передаём ID товара из PHP в JS

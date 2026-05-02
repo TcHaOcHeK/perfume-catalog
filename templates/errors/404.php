@@ -15,15 +15,14 @@
 <body>
 <header>
     <nav>
-        <a href="/">Главная</a>
-        <a href="/catalog">Каталог</a>
+        <a href="/perfume-catalog/public/catalog.html">Каталог</a>
     </nav>
 </header>
 
 <main>
     <h1>404</h1>
     <p>Страница не найдена</p>
-    <p><a href="/catalog">Вернуться к каталогу</a></p>
+    <p><a href="/perfume-catalog/public/catalog.html">Вернуться к каталогу</a></p>
 </main>
 
 <footer>

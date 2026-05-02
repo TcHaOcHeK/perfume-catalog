@@ -251,7 +251,7 @@
                 <div style="text-align:center;padding:60px 20px;">
                     <h1 style="color:#1E1E1E;margin-bottom:20px;">Error</h1>
                     <p style="color:#666;margin-bottom:30px;">${escapeHtml(message)}</p>
-                    <a href="catalog.php" class="btn btn--primary">Back to catalog</a>
+                    <a href="perfume-catalog/public/catalog.html" class="btn btn--primary">Back to catalog</a>
                 </div>
             `;
         }
