@@ -26,26 +26,28 @@ if (!$productId) {
     <script type="application/ld+json" id="productSchema"></script>
 </head>
 <body class="product-page">
-<!-- Хлебные крошки -->
-<nav class="breadcrumbs container" aria-label="Хлебные крошки">
-    <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item">
-            <a href="catalog.php" class="breadcrumbs__link">Каталог</a>
-        </li>
-        <li class="breadcrumbs__item">
-            <a href="#" class="breadcrumbs__link" id="brandBreadcrumb">Бренд</a>
-        </li>
-        <li class="breadcrumbs__item">
-            <span class="breadcrumbs__current" id="productBreadcrumb">Товар</span>
-        </li>
-    </ol>
-</nav>
 
 <!-- Основной контент -->
 <main class="product-main container">
     <article class="product-detail" itemscope itemtype="https://schema.org/Product">
         <!-- Левая часть: Галерея изображений -->
         <div class="product-gallery">
+
+            <!-- Хлебные крошки -->
+            <nav class="breadcrumbs " aria-label="Хлебные крошки">
+                <ol class="breadcrumbs__list">
+                    <li class="breadcrumbs__item">
+                        <a href="catalog.php" class="breadcrumbs__link">Каталог</a>
+                    </li>
+                    <li class="breadcrumbs__item">
+                        <a href="#" class="breadcrumbs__link" id="brandBreadcrumb">Бренд</a>
+                    </li>
+                    <li class="breadcrumbs__item">
+                        <span class="breadcrumbs__current" id="productBreadcrumb">Товар</span>
+                    </li>
+                </ol>
+            </nav>
+
             <div class="product-gallery__container">
                 <div class="product-gallery__image-wrapper">
                     <img src="" alt="" class="product-gallery__image" id="productImage" itemprop="image" onerror="this.src='../public/assets/img/placeholder.svg'">

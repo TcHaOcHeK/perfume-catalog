@@ -7,12 +7,31 @@
     min-height: 100vh;
 }
 
-/* Хлебные крошки - выровнены по левому краю */
-.breadcrumbs {
-    padding: 20px 0;
+/* Основной контент */
+.product-main {
+    padding: 0 0 40px; /* Убрали верхний отступ */
 }
 
-.breadcrumbs__list {
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* ========================================
+   Хлебные крошки
+   ======================================== */
+
+.product-gallery .breadcrumbs {
+    padding: 0 0 15px 0; /* Небольшой отступ только снизу до картинки */
+    margin-bottom: 0;
+    margin-top: 40px; /* Подняли крошки ближе к верху страницы */
+}
+
+/* Если нужно совсем вплотную к верху окна, измените margin-top выше на 0 или 10px */
+
+.product-gallery .breadcrumbs__list {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -22,9 +41,10 @@
     justify-content: flex-start;
 }
 
-.breadcrumbs__item {
+.product-gallery .breadcrumbs__item {
     font-size: 14px;
     color: #666;
+    margin: 0;
 }
 
 .breadcrumbs__link {
@@ -48,26 +68,14 @@
     color: #999;
 }
 
-/* Основной контент */
-.product-main {
-    padding: 0 0 40px;
-}
-
-.product-detail {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
-}
-
 /* ========================================
    Галерея изображений
    ======================================== */
 
 .product-gallery {
     position: sticky;
-    top: 100px;
-    margin-top: 40px;
+    top: 60px; /* Немного уменьшили отступ при прокрутке */
+    /* Убрали margin-top отсюда, перенесли в breadcrumbs */
 }
 
 .product-gallery__container {
@@ -92,7 +100,7 @@
     object-fit: contain;
 }
 
-/* Стрелки навигации - на фотографии слева и справа */
+/* Стрелки навигации */
 .product-gallery__nav {
     position: absolute;
     top: 50%;
@@ -170,10 +178,10 @@
    ======================================== */
 
 .product-info {
-    padding: 60px 0 20px; /* Отступ сверху как у галереи */
+    padding: 60px 0 20px; /* Выровняли высоту с галереей */
 }
 
-/* Заголовок и кнопка в одну строку */
+/* Заголовок и кнопка */
 .product-info__header {
     display: flex;
     align-items: center;
@@ -191,7 +199,6 @@
     flex: 1;
 }
 
-/* Овальная черная кнопка */
 .btn-catalog {
     display: inline-flex;
     align-items: center;
@@ -240,7 +247,6 @@
     vertical-align: super;
 }
 
-/* Убрали линию-разделитель */
 .product-info__description {
     font-size: 16px;
     line-height: 1.7;
@@ -347,7 +353,7 @@
 }
 
 /* ========================================
-   Дата и копирайт в одну строку
+   Дата и копирайт
    ======================================== */
 
 .product-info__date-wrapper {
@@ -371,46 +377,12 @@
     color: #999;
 }
 
-/* Старый footer скрываем */
 .footer {
     display: none;
 }
 
-/* Старый блок действий больше не нужен */
 .product-info__actions {
     display: none;
-}
-
-/* ========================================
-   Кнопки (общие стили)
-   ======================================== */
-
-.btn {
-    display: inline-block;
-    padding: 14px 32px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    text-align: center;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn--primary {
-    background-color: #1E1E1E;
-    color: #fff;
-}
-
-.btn--primary:hover {
-    background-color: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(30, 30, 30, 0.3);
-}
-
-.btn--primary:active {
-    transform: translateY(0);
 }
 
 /* ========================================
@@ -429,15 +401,6 @@
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
-    .product-gallery__image-wrapper {
-        box-shadow: none;
-    }
-
-    .fragrance-pyramid {
-        box-shadow: none;
-        border: 1px solid #ddd;
-    }
 }
 
 @media (max-width: 1024px) {
@@ -449,7 +412,10 @@
     .product-gallery {
         position: relative;
         top: 0;
-        margin-top: 20px;
+    }
+
+    .product-gallery .breadcrumbs {
+        margin-top: 0; /* На мобильных убираем отступ крошек */
     }
 
     .product-info {
@@ -460,10 +426,6 @@
         font-size: 32px;
     }
 
-    .product-info__price {
-        font-size: 28px;
-    }
-
     .product-info__header {
         flex-direction: column;
         align-items: flex-start;
@@ -472,19 +434,9 @@
     .btn-catalog {
         margin-top: 10px;
     }
-
-    .product-info__date-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
 }
 
 @media (max-width: 768px) {
-    .product-main {
-        padding: 0 0 40px;
-    }
-
     .product-gallery__nav {
         width: 40px;
         height: 40px;
@@ -509,57 +461,10 @@
     .product-characteristics__grid {
         grid-template-columns: 1fr;
     }
-
-    .fragrance-pyramid__grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .pyramid-column {
-        padding: 15px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-    }
 }
-
-@media (max-width: 480px) {
-    .product-info__title {
-        font-size: 24px;
-    }
-
-    .product-info__price {
-        font-size: 24px;
-    }
-
-    .product-gallery__thumbnail img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .breadcrumbs {
-        padding: 15px 0;
-    }
-}
-
-/* ========================================
-   Утилиты
-   ======================================== */
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-}
-
-/* Скрытие элементов для скринридеров */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
 }
