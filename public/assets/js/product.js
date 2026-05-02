@@ -88,7 +88,7 @@
         const product = state.product;
 
         elements.productTitle.textContent = product.title;
-        elements.productSKU.textContent = product.sku || '#' + String(product.id).padStart(8, '0');
+        elements.productSKU.textContent = product.sku;
         elements.productPrice.textContent = product.formatted_price;
         elements.productDescription.textContent = product.description || '';
         elements.productVolume.textContent = product.volumes || '100 ml';
@@ -191,7 +191,7 @@
             "name": product.title,
             "image": image,
             "description": product.description,
-            "sku": product.sku || '#' + String(product.id).padStart(8, '0'),
+            "sku": product.sku,
             "brand": { "@type": "Brand", "name": product.brand_name },
             "offers": {
                 "@type": "Offer",

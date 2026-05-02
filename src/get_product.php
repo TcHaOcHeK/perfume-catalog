@@ -38,6 +38,10 @@ try {
     $stmt->execute([$productId]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    if ($product) {
+        $product['sku'] = '#' . sprintf('%08d', $product['id']);
+    }
+
     if (!$product) {
         http_response_code(404);
         echo json_encode(['success' => false, 'error' => 'Product not found']);
