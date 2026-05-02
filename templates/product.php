@@ -1,10 +1,9 @@
 <?php
-// product.php - Страница товара
-// Получаем и валидируем ID товара
-$productId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$productId = $id ?? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$productId) {
-    header('Location: catalog.php');
+    http_response_code(404);  // Лучше 404, чем редирект
+    require __DIR__ . '/errors/404.php';
     exit;
 }
 ?>

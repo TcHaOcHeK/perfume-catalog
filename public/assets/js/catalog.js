@@ -13,6 +13,30 @@
 
     const API_URL = '../src/get_products.php';
 
+    function generateSlug(text) {
+        // Транслит русских букв
+        const converter = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+            'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+            'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+            'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+            'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch',
+            'ш': 'sh', 'щ': 'sch', 'ъ': '', 'ы': 'y', 'ь': '',
+            'э': 'e', 'ю': 'yu', 'я': 'ya',
+            ' ': '-', ',': '', '.': '', '!': '', '?': '',
+            ':': '', ';': '', '(': '', ')': '', '[': '', ']': ''
+        };
+
+        return text
+            .toLowerCase()
+            .trim()
+            .split('')
+            .map(char => converter[char] || char)
+            .join('')
+            .replace(/[^a-z0-9\-]/g, '')      // убираем всё кроме букв, цифр, дефисов
+            .replace(/-+/g, '-')               // множественные дефисы → один
+            .replace(/^-+|-+$/g, '');          // убираем дефисы по краям
+    }
     // ========================================
     // DOM элементы
     // ========================================
@@ -243,7 +267,7 @@
             <article class="product-card" data-product-id="${product.id}">
                 <div class="product-card__image-wrapper">
                     <img 
-                        src="${product.image || '../public/assets/img/placeholder.jpg'}" 
+                        src="${product.image || '../public/assets/img/placeholder.svg'}" 
                         alt="${product.title}" 
                         class="product-card__image"
                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23E0E0E0%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EНет фото%3C/text%3E%3C/svg%3E'"
@@ -253,7 +277,7 @@
                     <span class="product-card__brand">${product.brand}</span>
                     <span class="product-card__sku">${product.sku}</span>
                     <h3 class="product-card__title">
-                        <a href="product.php?id=${product.id}" class="product-card__link-text">${product.title}</a>
+                       <a href="/perfume-catalog/public/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
                     </h3>
                     <p class="product-card__price">${formatPrice(product.price)}</p>
                 </div>
