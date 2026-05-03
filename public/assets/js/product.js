@@ -99,7 +99,10 @@
 
         // Хлебные крошки
         elements.brandBreadcrumb.textContent = product.brand_name || 'Brand';
-        elements.brandBreadcrumb.href = `catalog.php?brand=${product.brand_id}`;
+        const brandSlug = generateSlug(product.brand_name);
+        elements.brandBreadcrumb.href = `/perfume-catalog/public/brand-${product.brand_id}-${brandSlug}.html`;
+
+
         elements.productBreadcrumb.textContent = product.title;
 
         renderGallery();
@@ -236,6 +239,16 @@
         if (!path) return 'placeholder.svg';
         const parts = path.split('/');
         return parts[parts.length - 1];
+    }
+
+    function generateSlug(text) {
+        if (!text) return '';
+        return text.toString()
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')      // Удаляем спецсимволы
+            .replace(/[\s_-]+/g, '-')      // Заменяем пробелы и подчеркивания на дефис
+            .replace(/^-+|-+$/g, '');      // Удаляем дефисы по краям
     }
 
     function escapeHtml(text) {

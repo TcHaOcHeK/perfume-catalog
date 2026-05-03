@@ -19,19 +19,16 @@ if ($url === 'catalog' || $url === 'catalog.html') {
     $pageTitle = 'Каталог парфюмерии';
     require __DIR__ . '/../templates/catalog.php';
 
-// Страница товара: /3-nocturne-iris.html
-} elseif (preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $url, $m)) {
-    $id = (int)$m[1];           // 3
-
-    $pageTitle = 'Товар #' . $id;
-    require __DIR__ . '/../templates/product.php';
-
-// Страница бренда: brand/chanel.html
-} elseif (preg_match('/^brand\/([a-z0-9-]+)\.html$/', $url, $m)) {
-    $brandSlug = $m[1];
+} elseif (preg_match('/brand-(\d+)-([a-z0-9-]+)\.html$/', $url, $m)) {
+    $brandSlug = (int)$m[1];
     $pageTitle = 'Бренд: ' . $brandSlug;
     require __DIR__ . '/../templates/brand.php';
 
+// Страница товара: /3-nocturne-iris.html
+} elseif (preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $url, $m)) {
+    $id = (int)$m[1];           // 3
+    $pageTitle = 'Товар #' . $id;
+    require __DIR__ . '/../templates/product.php';
 
 // Вход для админа
 } elseif ($url === 'login' || $url === 'login.html') {
