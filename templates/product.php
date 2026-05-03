@@ -37,7 +37,7 @@ if (!$productId) {
             <nav class="breadcrumbs " aria-label="Хлебные крошки">
                 <ol class="breadcrumbs__list">
                     <li class="breadcrumbs__item">
-                        <a href="catalog.php" class="breadcrumbs__link">Каталог</a>
+                        <a href="/perfume-catalog/public/catalog.html" class="breadcrumbs__link">Каталог</a>
                     </li>
                     <li class="breadcrumbs__item">
                         <a href="#" class="breadcrumbs__link" id="brandBreadcrumb">Бренд</a>
@@ -77,7 +77,7 @@ if (!$productId) {
         <div class="product-info">
             <div class="product-info__header">
                 <h1 class="product-info__title" itemprop="name" id="productTitle"></h1>
-                <a href="catalog.php" class="btn-catalog">← Back to catalog</a>
+                <a href="/perfume-catalog/public/catalog.html" class="btn-catalog">← Back to catalog</a>
             </div>
 
             <p class="product-info__sku" id="productSKU"></p>

@@ -64,8 +64,9 @@ try {
     // Форматирование цены (без копеек)
     $product['formatted_price'] = number_format((float)$product['price'], 0, '.', ' ');
 
-    // Ноты аромата на основе семейства
-    $product['fragrance_notes'] = getFragranceNotes($product['family_name']);
+    // === НОВЫЙ ЗАПРОС: Получение нот аромата из базы данных ===
+    $product['fragrance_notes'] = getProductNotes($pdo, $productId);
+    // ===========================================================
 
     // Долговечность на основе типа
     $product['longevity'] = getLongevity($product['type_name']);
@@ -92,33 +93,32 @@ try {
 }
 
 /**
- * Получить ноты аромата на основе семейства
+ * Получить ноты аромата из базы данных (многие-ко-многим)
+ * Возвращает массив вида: ['top' => [...], 'heart' => [...], 'base' => [...]]
  */
-function getFragranceNotes($familyName) {
-    $notes = [
-        'Floral' => [
-            'top' => ['Bergamot', 'Pink pepper'],
-            'heart' => ['Jasmine sambac', 'Iris', 'Freesia'],
-            'base' => ['Sandalwood', 'Amber', 'White musk']
-        ],
-        'Woody' => [
-            'top' => ['Cardamom', 'Bergamot'],
-            'heart' => ['Cedar', 'Vetiver'],
-            'base' => ['Sandalwood', 'Amber', 'Musk']
-        ],
-        'Citrus' => [
-            'top' => ['Lemon', 'Bergamot', 'Orange'],
-            'heart' => ['Neroli', 'Petitgrain'],
-            'base' => ['Cedar', 'Amber']
-        ],
-        'Oriental' => [
-            'top' => ['Saffron', 'Cardamom'],
-            'heart' => ['Vanilla', 'Cinnamon'],
-            'base' => ['Sandalwood', 'Amber', 'Musk']
-        ]
-    ];
+function getProductNotes($pdo, $productId) {
+    $sql = "SELECT 
+                pn.note_stage,
+                n.name as note_name,
+                pn.sort_order
+            FROM product_notes pn
+            JOIN notes n ON pn.note_id = n.id
+            WHERE pn.product_id = ?
+            ORDER BY 
+                FIELD(pn.note_stage, 'top', 'heart', 'base'),
+                pn.sort_order";
 
-    return $notes[$familyName] ?? $notes['Floral'];
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$productId]);
+    $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Группируем по стадиям пирамиды
+    $result = ['top' => [], 'heart' => [], 'base' => []];
+    foreach ($notes as $note) {
+        $result[$note['note_stage']][] = $note['note_name'];
+    }
+
+    return $result;
 }
 
 /**
