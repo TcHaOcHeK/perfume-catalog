@@ -14,15 +14,15 @@
 .header__container {
     display: flex;
     align-items: center;
-    justify-content: center; /* ← ЦЕНТРИРОВАНИЕ ВСЕЙ ШАПКИ */
+    justify-content: center;
     gap: var(--spacing-md);
     padding: var(--spacing-md) 0;
-    max-width: 1200px; /* ← Ограничиваем ширину контейнера */
-    margin: 0 auto;     /* ← Центрируем сам контейнер */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .logo__image {
-    width: 80px;        /* ← Увеличено с 60 до 80 px */
+    width: 80px;
     height: 80px;
     display: block;
 }
@@ -31,9 +31,9 @@
 .header__center {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm); /* ← уменьшено с md до sm */
-    width: fit-content;     /* ← чтобы не растягивалась */
-    min-width: 500px;       /* ← минимальная ширина для комфортного отображения */
+    gap: var(--spacing-sm);
+    width: fit-content;
+    min-width: 500px;
 }
 
 /* Выпадающий фильтр */
@@ -51,7 +51,7 @@
     border-radius: var(--radius-md);
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.9375rem; /* 15px вместо 14px для лучшей читаемости */
+    font-size: 0.9375rem;
     font-weight: 500;
     color: var(--color-text-primary);
     transition: background-color var(--transition-fast);

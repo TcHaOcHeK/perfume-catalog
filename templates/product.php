@@ -52,7 +52,6 @@ if (!$productId) {
                 <div class="product-gallery__image-wrapper">
                     <img src="" alt="" class="product-gallery__image" id="productImage" itemprop="image" onerror="this.src='../public/assets/img/placeholder.svg'">
 
-                    <!-- Стрелки теперь внутри wrapper -->
                     <button class="product-gallery__nav product-gallery__nav--prev" aria-label="Предыдущее изображение" id="prevImage">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="15 18 9 12 15 6"></polyline>
