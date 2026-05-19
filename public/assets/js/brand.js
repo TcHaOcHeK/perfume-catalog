@@ -62,6 +62,7 @@
                     sku: product.sku,
                     title: product.title,
                     brand: product.brand_name || 'Бренд не указан',
+                    brandDescription: product.brand_description || null,
                     type: product.type_name || 'Тип не указан',
                     gender: product.gender,
                     price: parseFloat(product.price),
@@ -77,7 +78,7 @@
                     state.brand = {
                         id: state.brandId,
                         name: firstProduct.brand,
-                        description: getBrandDescription(firstProduct.brand)
+                        description: getBrandDescription(firstProduct.brand, firstProduct.brandDescription)
                     };
 
                     renderBrandInfo();
@@ -171,28 +172,26 @@
     // Вспомогательные функции
     // ========================================
 
-    function getBrandDescription(brandName) {
+    function getBrandDescription(brandName, description = null) {
+
+        if (description !== null && description !== undefined && description.trim() !== '') {
+            return description;
+        }
+
+
         const descriptions = {
-            'Maison': `
-                <p>Maison Lumière is the embodiment of Mediterranean light in every bottle.</p>
+            'Maison': `<p>Maison Lumière is the embodiment of Mediterranean light in every bottle.</p>
                 <p>A warm trail of white flowers and wood creates an aura of sophistication and femininity.</p>
-                <p>Ideal for those who appreciate elegant simplicity.</p>
-            `,
-            'Mauntin': `
-                <p>Mauntin represents bold compositions for the modern adventurer.</p>
+                <p>Ideal for those who appreciate elegant simplicity.</p>`,
+            'Mauntin': `<p>Mauntin represents bold compositions for the modern adventurer.</p>
                 <p>Woody and spicy notes create powerful, memorable fragrances.</p>
-                <p>Perfect for those who dare to stand out.</p>
-            `,
-            'Nocturne': `
-                <p>Nocturne captures the mystery and romance of the night.</p>
+                <p>Perfect for those who dare to stand out.</p>`,
+            'Nocturne': `<p>Nocturne captures the mystery and romance of the night.</p>
                 <p>Floral and oriental compositions for elegant, sophisticated individuals.</p>
-                <p>Each fragrance tells a unique story.</p>
-            `,
-            'Peak': `
-                <p>Peak embodies freshness and aquatic energy.</p>
+                <p>Each fragrance tells a unique story.</p>`,
+            'Peak': `<p>Peak embodies freshness and aquatic energy.</p>
                 <p>Citrus and marine notes for active, dynamic personalities.</p>
-                <p>The choice of those who reach for the top.</p>
-            `
+                <p>The choice of those who reach for the top.</p>`
         };
 
         return descriptions[brandName] || `<p>Premium fragrances from ${brandName}.</p>`;
