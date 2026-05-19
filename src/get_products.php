@@ -110,6 +110,7 @@ function getProducts() {
         // Получение товаров
         $sql = "SELECT p.*, 
                        b.name as brand_name, 
+                       b.description AS brand_description,
                        pt.name as type_name, 
                        ff.name as family_name,
                        pi.image_path as image
