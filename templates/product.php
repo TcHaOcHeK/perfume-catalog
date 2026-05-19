@@ -1,8 +1,19 @@
 <?php
-$productId = $id ?? filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
+
+// 2. Очищаем от опасностей (защита от XSS)
+$url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+$url = explode('/', $url);
+//var_dump($url); die;
+$page = !empty($url) ? $url[1] : false;
+//var_dump($page); die;
+preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $page, $m);
+//var_dump($m[1]); die;
+$productId = !(empty($m)) ? $m[1] : false;
+var_dump($productId);die;
 
 if (!$productId) {
-    http_response_code(404);  // Лучше 404, чем редирект
+    http_response_code(404);
     require __DIR__ . '/errors/404.php';
     exit;
 }

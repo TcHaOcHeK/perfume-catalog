@@ -3,7 +3,7 @@ RewriteBase /perfume-catalog/public/
 
 # Убираем www (по ТЗ)
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+RewriteRule ^(.*)$ http://%1/$1/$2 [R=301,L]
 
 # Если файл есть реально — отдаём его (картинки, стили)
 RewriteCond %{REQUEST_FILENAME} -f [OR]
