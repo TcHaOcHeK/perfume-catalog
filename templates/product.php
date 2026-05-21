@@ -1,20 +1,16 @@
 <?php
 $url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
-
-// 2. Очищаем от опасностей (защита от XSS)
 $url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
 $url = explode('/', $url);
-//var_dump($url); die;
+
 $page = !empty($url) ? $url[1] : false;
-//var_dump($page); die;
 preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $page, $m);
-//var_dump($m[1]); die;
-$productId = !(empty($m)) ? $m[1] : false;
-var_dump($productId);die;
+$productId = !(empty($m)) ? (int)$m[1] : false;
+//var_dump($productId);die;
 
 if (!$productId) {
     http_response_code(404);
-    require __DIR__ . '/errors/404.php';
+    require __DIR__ . '/perfume-catalog/templates/errors/404.php';
     exit;
 }
 ?>
@@ -29,9 +25,9 @@ if (!$productId) {
     <meta property="og:type" content="product">
     <meta property="og:image" content="" id="ogImage">
     <title id="pageTitle">Товар | Parfum Catalog</title>
-    <link rel="stylesheet" href="../public/assets/css/style.css">
-    <link rel="stylesheet" href="../public/assets/css/product.css">
-    <link rel="icon" type="image/svg+xml" href="../public/assets/img/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/product.css">
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
 
     <!-- Schema.org markup -->
     <script type="application/ld+json" id="productSchema"></script>
@@ -48,7 +44,7 @@ if (!$productId) {
             <nav class="breadcrumbs " aria-label="Хлебные крошки">
                 <ol class="breadcrumbs__list">
                     <li class="breadcrumbs__item">
-                        <a href="/perfume-catalog/public/catalog.html" class="breadcrumbs__link">Каталог</a>
+                        <a href="../catalog.html" class="breadcrumbs__link">Каталог</a>
                     </li>
                     <li class="breadcrumbs__item">
                         <a href="#" class="breadcrumbs__link" id="brandBreadcrumb">Бренд</a>
@@ -87,7 +83,7 @@ if (!$productId) {
         <div class="product-info">
             <div class="product-info__header">
                 <h1 class="product-info__title" itemprop="name" id="productTitle"></h1>
-                <a href="/perfume-catalog/public/catalog.html" class="btn-catalog">← Back to catalog</a>
+                <a href="../catalog" class="btn-catalog">← Back to catalog</a>
             </div>
 
             <p class="product-info__sku" id="productSKU"></p>
@@ -154,6 +150,6 @@ if (!$productId) {
     // Передаём ID товара из PHP в JS
     window.PRODUCT_ID = <?= json_encode($productId) ?>;
 </script>
-<script src="../public/assets/js/product.js"></script>
+<script src="../assets/js/product.js"></script>
 </body>
 </html>

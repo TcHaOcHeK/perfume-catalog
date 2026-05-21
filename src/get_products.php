@@ -9,7 +9,7 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Подключение к БД
-require_once '../config/db.php';
+require_once '/perfume-catalog/config/db.php';
 
 // Получение действия
 $action = $_GET['action'] ?? '';

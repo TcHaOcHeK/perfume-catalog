@@ -7,8 +7,8 @@
 (function() {
     'use strict';
 
-    const API_URL = '../src/get_product.php';
-    const BASE_IMAGE_PATH = '../public/assets/img/';
+    const API_URL = '/perfume-catalog/src/get_product.php';
+    const BASE_IMAGE_PATH = '/perfume-catalog/public/assets/img/';
 
     // DOM элементы
     const elements = {
@@ -100,7 +100,7 @@
         // Хлебные крошки
         elements.brandBreadcrumb.textContent = product.brand_name || 'Brand';
         const brandSlug = generateSlug(product.brand_name);
-        elements.brandBreadcrumb.href = `/perfume-catalog/public/brand-${product.brand_id}-${brandSlug}.html`;
+        elements.brandBreadcrumb.href = `/perfume-catalog/public/brand/${product.brand_id}-${brandSlug}.html`;
 
 
         elements.productBreadcrumb.textContent = product.title;
@@ -146,7 +146,7 @@
                     aria-label="Image ${index + 1}">
                 <img src="${BASE_IMAGE_PATH}${getImageFileName(image.image_path)}" 
                      alt="Thumbnail ${index + 1}"
-                     onerror="this.src='../public/assets/img/placeholder.svg'">
+                     onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'">
             </button>
         `).join('');
 
@@ -264,7 +264,7 @@
                 <div style="text-align:center;padding:60px 20px;">
                     <h1 style="color:#1E1E1E;margin-bottom:20px;">Error</h1>
                     <p style="color:#666;margin-bottom:30px;">${escapeHtml(message)}</p>
-                    <a href="perfume-catalog/public/catalog.html" class="btn btn--primary">Back to catalog</a>
+                    <a href="../catalog" class="btn btn--primary">Back to catalog</a>
                 </div>
             `;
         }

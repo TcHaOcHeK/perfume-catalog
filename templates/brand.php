@@ -1,12 +1,20 @@
 <?php
-$brandId = $brandSlug ?? filter_input(INPUT_GET, 'brandSlug', FILTER_VALIDATE_INT);
+$url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
+$url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+$url = explode('/', $url);
+
+$page = !empty($url) ? $url[1] : false;
+preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $page, $m);
+$brandId = !(empty($m)) ? (int)$m[1] : false;
+//var_dump($brandId);die;
 
 if (!$brandId) {
     http_response_code(404);
-    require __DIR__ . '/errors/404.php';
+    require __DIR__ . '/perfume-catalog/templates/errors/404.php';
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -17,17 +25,18 @@ if (!$brandId) {
     <meta property="og:description" content="Коллекция ароматов">
     <meta property="og:type" content="website">
     <title id="pageTitle">Бренд | Parfum Catalog</title>
-    <link rel="stylesheet" href="../public/assets/css/style.css">
-    <link rel="stylesheet" href="../public/assets/css/brand.css">
-    <link rel="icon" type="image/svg+xml" href="/public/assets/img/favicon.svg">
+    <link rel="stylesheet" href="/perfume-catalog/public/assets/css/style.css">
+    <link rel="stylesheet" href="/perfume-catalog/public/assets/css/brand.css">
+    <link rel="icon" type="image/svg+xml" href="/perfume-catalog/public/assets/img/favicon.svg">
 </head>
 <body>
+
 <!-- Шапка -->
 <header class="header">
     <div class="container header__container">
         <!-- Логотип -->
         <a href="/perfume-catalog/public/catalog.html" class="logo">
-            <img src="../public/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
+            <img src="/perfume-catalog/public/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
         </a>
 
         <!-- Центральная часть -->
@@ -117,6 +126,6 @@ if (!$brandId) {
 <script>
     window.BRAND_ID = <?= json_encode($brandId) ?>;
 </script>
-<script src="../public/assets/js/brand.js"></script>
+<script src="/perfume-catalog/public/assets/js/brand.js"></script>
 </body>
 </html>
