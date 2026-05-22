@@ -103,7 +103,7 @@
             if (data.success && data.products) {
                 state.products = data.products.map(product => ({
                     id: product.id,
-                    sku: product.sku, // ← уже в формате #00000001
+                    sku: product.sku,
                     title: product.title,
                     brand: product.brand_name || 'Бренд не указан',
                     type: product.type_name || 'Тип не указан',
@@ -123,7 +123,6 @@
             }
         } catch (error) {
             console.error('Ошибка загрузки товаров:', error);
-            // Моковые данные — с генерацией sku
             state.products = getMockProducts();
             state.filteredProducts = [...state.products];
             renderProducts();
@@ -131,48 +130,48 @@
         }
     }
 
-    function getMockProducts() {
-        const ids = [1, 2, 3, 4, 5, 6];
-        const titles = ['Maison Lumeria', 'Mauntin Rock', 'Nocturne Iris', 'Peak Ecstasy', 'Nocturne Iris', 'Maison Lumeria'];
-        const brands = ['Maison', 'Mauntin', 'Nocturne', 'Peak', 'Nocturne', 'Maison'];
-        const types = ['Eau de Parfum', 'Eau de Parfum', 'Eau de Toilette', 'Parfum', 'Eau de Toilette', 'Eau de Parfum'];
-        const genders = ['female', 'unisex', 'female', 'male', 'female', 'female'];
-        const prices = [12000, 16000, 10000, 20000, 10000, 12000];
-        const images = [
-            '../public/assets/img/maison-lumeria.jpg',
-            '../public/assets/img/maurtin-rock.jpg',
-            '../public/assets/img/nocturne-iris.jpg',
-            '../public/assets/img/peak-ecstasy.jpg',
-            '../public/assets/img/nocturne-iris.jpg',
-            '../public/assets/img/maison-lumeria.jpg'
-        ];
-        const descriptions = [
-            'Mediterranean light',
-            'Bold composition',
-            'Floral bouquet',
-            'Aquatic freshness',
-            'Floral bouquet',
-            'Mediterranean light'
-        ];
-        const releaseDates = [
-            '2026-01-05', '2025-11-20', '2026-02-14', '2025-09-10', '2026-02-14', '2026-01-05'
-        ];
-        const views = [120, 85, 200, 60, 200, 120];
-
-        return ids.map((id, i) => ({
-            id: id,
-            sku: '#' + String(id).padStart(8, '0'), // ← Генерация: #00000001, #00000002...
-            title: titles[i],
-            brand: brands[i],
-            type: types[i],
-            gender: genders[i],
-            price: prices[i],
-            image: images[i],
-            views: views[i],
-            releaseDate: releaseDates[i],
-            description: descriptions[i]
-        }));
-    }
+    // function getMockProducts() {
+    //     const ids = [1, 2, 3, 4, 5, 6];
+    //     const titles = ['Maison Lumeria', 'Mauntin Rock', 'Nocturne Iris', 'Peak Ecstasy', 'Nocturne Iris', 'Maison Lumeria'];
+    //     const brands = ['Maison', 'Mauntin', 'Nocturne', 'Peak', 'Nocturne', 'Maison'];
+    //     const types = ['Eau de Parfum', 'Eau de Parfum', 'Eau de Toilette', 'Parfum', 'Eau de Toilette', 'Eau de Parfum'];
+    //     const genders = ['female', 'unisex', 'female', 'male', 'female', 'female'];
+    //     const prices = [12000, 16000, 10000, 20000, 10000, 12000];
+    //     const images = [
+    //         '../public/assets/img/maison-lumeria.jpg',
+    //         '../public/assets/img/maurtin-rock.jpg',
+    //         '../public/assets/img/nocturne-iris.jpg',
+    //         '../public/assets/img/peak-ecstasy.jpg',
+    //         '../public/assets/img/nocturne-iris.jpg',
+    //         '../public/assets/img/maison-lumeria.jpg'
+    //     ];
+    //     const descriptions = [
+    //         'Mediterranean light',
+    //         'Bold composition',
+    //         'Floral bouquet',
+    //         'Aquatic freshness',
+    //         'Floral bouquet',
+    //         'Mediterranean light'
+    //     ];
+    //     const releaseDates = [
+    //         '2026-01-05', '2025-11-20', '2026-02-14', '2025-09-10', '2026-02-14', '2026-01-05'
+    //     ];
+    //     const views = [120, 85, 200, 60, 200, 120];
+    //
+    //     return ids.map((id, i) => ({
+    //         id: id,
+    //         sku: '#' + String(id).padStart(8, '0'), // ← Генерация: #00000001, #00000002...
+    //         title: titles[i],
+    //         brand: brands[i],
+    //         type: types[i],
+    //         gender: genders[i],
+    //         price: prices[i],
+    //         image: images[i],
+    //         views: views[i],
+    //         releaseDate: releaseDates[i],
+    //         description: descriptions[i]
+    //     }));
+    // }
 
     // ========================================
     // Фильтрация и сортировка
@@ -266,17 +265,17 @@
             <article class="product-card" data-product-id="${product.id}">
                 <div class="product-card__image-wrapper">
                     <img 
-                        src="${product.image || '../public/assets/img/placeholder.svg'}" 
+                        src="${product.image || '/perfume-catalog/public/assets/img/placeholder.svg'}" 
                         alt="${product.title}" 
                         class="product-card__image"
-                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23E0E0E0%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EНет фото%3C/text%3E%3C/svg%3E'"
+                        onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'"
                     >
                 </div>
                 <div class="product-card__content">
                     <span class="product-card__brand">${product.brand}</span>
                     <span class="product-card__sku">${product.sku}</span>
                     <h3 class="product-card__title">
-                       <a href="/perfume-catalog/public/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
+                       <a href="/perfume-catalog/public/product/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
                     </h3>
                     <p class="product-card__price">${formatPrice(product.price)}</p>
                 </div>

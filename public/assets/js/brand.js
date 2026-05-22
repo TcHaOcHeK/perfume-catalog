@@ -7,7 +7,7 @@
     'use strict';
 
     const API_URL = '/perfume-catalog/src/get_products.php';
-    const BASE_IMAGE_PATH = '/perfume-catalog/public/assets/img/';
+    const BASE_IMAGE_PATH = '../assets/img/';
 
     // DOM элементы
     const elements = {

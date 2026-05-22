@@ -10,7 +10,7 @@ header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Подключение к БД
-require_once '/perfume-catalog/config/db.php';
+require_once '../config/db.php';
 
 $productId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
