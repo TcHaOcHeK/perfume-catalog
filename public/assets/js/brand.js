@@ -150,10 +150,10 @@
             <article class="product-card" data-product-id="${product.id}">
                 <div class="product-card__image-wrapper">
                     <img 
-                        src="${product.image || BASE_IMAGE_PATH + 'placeholder.svg'}" 
+                        src="${product.image}" 
                         alt="${product.title}" 
                         class="product-card__image"
-                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23E0E0E0%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo image%3C/text%3E%3C/svg%3E'"
+                        onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'"
                     >
                 </div>
                 <div class="product-card__content">

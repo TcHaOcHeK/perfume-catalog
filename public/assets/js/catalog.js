@@ -265,7 +265,7 @@
             <article class="product-card" data-product-id="${product.id}">
                 <div class="product-card__image-wrapper">
                     <img 
-                        src="${product.image || '/perfume-catalog/public/assets/img/placeholder.svg'}" 
+                        src="${product.image }" 
                         alt="${product.title}" 
                         class="product-card__image"
                         onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'"
