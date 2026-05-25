@@ -4,7 +4,7 @@ $url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
 $url = explode('/', $url);
 
 $page = !empty($url) ? $url[1] : false;
-$page = (str_contains($page, '.html')) ? str_replace('.html', '', $page): $page;
+$page = str_contains($page, '.html') ? str_replace('.html', '', $page): $page;
 preg_match('/(\d+)-([a-z0-9-]+)$/', $page, $m);
 $productId = !(empty($m)) ? (int)$m[1] : false;
 //var_dump($productId);die;
