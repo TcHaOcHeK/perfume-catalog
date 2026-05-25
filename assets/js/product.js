@@ -8,7 +8,7 @@
     'use strict';
 
     const API_URL = '/perfume-catalog/src/get_product.php';
-    const BASE_IMAGE_PATH = '/perfume-catalog/public/assets/img/';
+    const BASE_IMAGE_PATH = '/perfume-catalog/assets/img/';
 
     // DOM элементы
     const elements = {
@@ -100,7 +100,7 @@
         // Хлебные крошки
         elements.brandBreadcrumb.textContent = product.brand_name || 'Brand';
         const brandSlug = generateSlug(product.brand_name);
-        elements.brandBreadcrumb.href = `/perfume-catalog/public/brand/${product.brand_id}-${brandSlug}.html`;
+        elements.brandBreadcrumb.href = `/perfume-catalog/brand/${product.brand_id}-${brandSlug}.html`;
 
 
         elements.productBreadcrumb.textContent = product.title;
@@ -146,7 +146,7 @@
                     aria-label="Image ${index + 1}">
                 <img src="${BASE_IMAGE_PATH}${getImageFileName(image.image_path)}" 
                      alt="Thumbnail ${index + 1}"
-                     onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'">
+                     onerror="this.src='/perfume-catalog/assets/img/placeholder.svg'">
             </button>
         `).join('');
 

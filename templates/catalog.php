@@ -8,9 +8,9 @@
     <meta property="og:description" content="Найдите свой идеальный аромат">
     <meta property="og:type" content="website">
     <title>Каталог парфюмерии | Parfum Catalog</title>
-    <link rel="stylesheet" href="../public/assets/css/style.css">
-    <link rel="stylesheet" href="../public/assets/css/catalog.css">
-    <link rel="icon" type="image/svg+xml" href="../public/assets/img/favicon.svg">
+    <link rel="stylesheet" href="/perfume-catalog/assets/css/style.css">
+    <link rel="stylesheet" href="/perfume-catalog/assets/css/catalog.css">
+    <link rel="icon" type="image/svg+xml" href="/perfume-catalog/assets/img/favicon.svg">
 </head>
 <body>
 <!-- Шапка -->
@@ -18,7 +18,7 @@
     <div class="container header__container">
         <!-- Логотип -->
         <a class="logo">
-            <img src="../public/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
+            <img src="/perfume-catalog/assets/img/logo.svg" alt="Parfum Catalog Logo" class="logo__image">
         </a>
 
         <!-- Центральная часть: Фильтры и Поиск -->
@@ -110,7 +110,7 @@
 
         <!-- Пользователь -->
         <div class="header__user">
-            <a href="/perfume-catalog/public/login" class="user-btn" aria-label="Личный кабинет">
+            <a href="/templates/login" class="user-btn" aria-label="Личный кабинет">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M12 14c-6 0-8 3-8 6v1h16v-1c0-3-2-6-8-6z"></path>
@@ -175,6 +175,6 @@
     </div>
 </footer>
 
-<script src="../public/assets/js/catalog.js"></script>
+<script src="/perfume-catalog/assets/js/catalog.js"></script>
 </body>
 </html>

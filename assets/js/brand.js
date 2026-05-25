@@ -109,10 +109,10 @@
 
         // Устанавливаем изображение бренда (можно добавить отдельное поле в БД)
         const brandImageMap = {
-            'Maison': '/perfume-catalog/public/assets/img/maison-lumeria.svg',
-            'Mauntin': '/perfume-catalog/public/assets/img/maurtin-rock.svg',
-            'Nocturne': '/perfume-catalog/public/assets/img/nocturne-iris.svg',
-            'Peak': '/perfume-catalog/public/assets/img/peak-ecstasy.svg'
+            'Maison': '/perfume-catalog/assets/img/maison-lumeria.svg',
+            'Mauntin': '/perfume-catalog/assets/img/maurtin-rock.svg',
+            'Nocturne': '/perfume-catalog/assets/img/nocturne-iris.svg',
+            'Peak': '/perfume-catalog/assets/img/peak-ecstasy.svg'
         };
 
         const imageUrl = brandImageMap[brand.name] || BASE_IMAGE_PATH + 'placeholder.svg';
@@ -153,14 +153,14 @@
                         src="${product.image}" 
                         alt="${product.title}" 
                         class="product-card__image"
-                        onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'"
+                        onerror="this.src='/perfume-catalog/assets/img/placeholder.svg'"
                     >
                 </div>
                 <div class="product-card__content">
                     <span class="product-card__brand">${product.brand}</span>
                     <span class="product-card__sku">${product.sku}</span>
                     <h3 class="product-card__title">
-                       <a href="/perfume-catalog/public/${product.id}/${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
+                       <a href="/perfume-catalog/product/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
                     </h3>
                     <p class="product-card__price">${formatPrice(product.price)}</p>
                 </div>
@@ -236,7 +236,7 @@
                 <div style="text-align:center;padding:60px 20px;">
                     <h1 style="color:#1E1E1E;margin-bottom:20px;">Error</h1>
                     <p style="color:#666;margin-bottom:30px;">${escapeHtml(message)}</p>
-                    <a href="/perfume-catalog/public/catalog" class="btn-back" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#1E1E1E;color:#fff;border-radius:50px;text-decoration:none;">
+                    <a href="/perfume-catalog/" class="btn-back" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#1E1E1E;color:#fff;border-radius:50px;text-decoration:none;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>

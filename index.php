@@ -10,6 +10,7 @@ $entity = !empty($url) ? $url[0] : false;
 $page = !empty($url) ? $url[1] : false;
 
 //var_dump($entity);
+$entity = $entity != '' ? $entity : 'catalog';// переход на главную страницу
 $entity = (str_contains($entity, '.html')) ? str_replace('.html', '', $entity): $entity;
 //var_dump($entity); die;
 //if ($entity.)
@@ -22,4 +23,4 @@ preg_match('/(\d+)-([a-z0-9-]+)\.html$/', $page, $m);
 
 $pageId = !(empty($m)) ? $m[1] : false;
 
-require __DIR__ . "/../templates/{$entity}.php";
+require __DIR__ . "/templates/{$entity}.php";

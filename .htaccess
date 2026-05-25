@@ -1,5 +1,8 @@
 RewriteEngine On
-RewriteBase /perfume-catalog/public/
+RewriteBase /perfume-catalog/
+
+# Запрет просмотра папок
+Options -Indexes
 
 # Убираем www (по ТЗ)
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
@@ -13,5 +16,3 @@ RewriteRule ^ - [L]
 # Всё остальное → отправляем в index.php
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
-# Запрет просмотра папок
-Options -Indexes

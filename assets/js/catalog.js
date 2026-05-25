@@ -10,7 +10,7 @@
     // Константы и конфигурация
     // ========================================
 
-    const API_URL = '../src/get_products.php';
+    const API_URL = '/perfume-catalog/src/get_products.php';
 
     function generateSlug(text) {
         // Транслит русских букв
@@ -138,12 +138,12 @@
     //     const genders = ['female', 'unisex', 'female', 'male', 'female', 'female'];
     //     const prices = [12000, 16000, 10000, 20000, 10000, 12000];
     //     const images = [
-    //         '../public/assets/img/maison-lumeria.jpg',
-    //         '../public/assets/img/maurtin-rock.jpg',
-    //         '../public/assets/img/nocturne-iris.jpg',
-    //         '../public/assets/img/peak-ecstasy.jpg',
-    //         '../public/assets/img/nocturne-iris.jpg',
-    //         '../public/assets/img/maison-lumeria.jpg'
+    //         '../public/perfume-catalog/assets/img/maison-lumeria.jpg',
+    //         '../public/perfume-catalog/assets/img/maurtin-rock.jpg',
+    //         '../public/perfume-catalog/assets/img/nocturne-iris.jpg',
+    //         '../public/perfume-catalog/assets/img/peak-ecstasy.jpg',
+    //         '../public/perfume-catalog/assets/img/nocturne-iris.jpg',
+    //         '../public/perfume-catalog/assets/img/maison-lumeria.jpg'
     //     ];
     //     const descriptions = [
     //         'Mediterranean light',
@@ -268,14 +268,14 @@
                         src="${product.image }" 
                         alt="${product.title}" 
                         class="product-card__image"
-                        onerror="this.src='/perfume-catalog/public/assets/img/placeholder.svg'"
+                        onerror="this.src='/perfume-catalog/assets/img/placeholder.svg'"
                     >
                 </div>
                 <div class="product-card__content">
                     <span class="product-card__brand">${product.brand}</span>
                     <span class="product-card__sku">${product.sku}</span>
                     <h3 class="product-card__title">
-                       <a href="/perfume-catalog/public/product/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
+                       <a href="/perfume-catalog/product/${product.id}-${generateSlug(product.title)}.html" class="product-card__link-text">${product.title}</a>
                     </h3>
                     <p class="product-card__price">${formatPrice(product.price)}</p>
                 </div>

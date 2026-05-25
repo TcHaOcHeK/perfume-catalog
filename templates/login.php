@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Авторизация и регистрация в парфюмерном каталоге">
     <title>Вход в систему | Парфюмерный каталог</title>
-    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 </head>
 <body class="login-page">
 <main class="login-container">
     <div class="login-logo">
-        <img src="../public/assets/img/logo.svg" alt="Логотип парфюмерного каталога" class="logo-image">
+        <img src="../assets/img/logo.svg" alt="Логотип парфюмерного каталога" class="logo-image">
     </div>
 
     <div class="login-card">

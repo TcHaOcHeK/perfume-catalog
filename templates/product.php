@@ -11,7 +11,7 @@ $productId = !(empty($m)) ? (int)$m[1] : false;
 
 if (!$productId) {
     http_response_code(404);
-    require __DIR__ . '/perfume-catalog/templates/errors/404.php';
+    require __DIR__ . '/errors/404.php';
     exit;
 }
 ?>
@@ -26,9 +26,9 @@ if (!$productId) {
     <meta property="og:type" content="product">
     <meta property="og:image" content="" id="ogImage">
     <title id="pageTitle">Товар | Parfum Catalog</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/product.css">
-    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+    <link rel="stylesheet" href="/perfume-catalog/assets/css/style.css">
+    <link rel="stylesheet" href="/perfume-catalog/assets/css/product.css">
+    <link rel="icon" type="image/svg+xml" href="/perfume-catalog/assets/img/favicon.svg">
 
     <!-- Schema.org markup -->
     <script type="application/ld+json" id="productSchema"></script>
@@ -58,7 +58,7 @@ if (!$productId) {
 
             <div class="product-gallery__container">
                 <div class="product-gallery__image-wrapper">
-                    <img src="" alt="" class="product-gallery__image" id="productImage" itemprop="image" onerror="this.src='../public/assets/img/placeholder.svg'">
+                    <img src="" alt="" class="product-gallery__image" id="productImage" itemprop="image" onerror="this.src='/perfume-catalog/assets/img/placeholder.svg'">
 
                     <button class="product-gallery__nav product-gallery__nav--prev" aria-label="Предыдущее изображение" id="prevImage">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -151,6 +151,6 @@ if (!$productId) {
     // Передаём ID товара из PHP в JS
     window.PRODUCT_ID = <?= json_encode($productId) ?>;
 </script>
-<script src="../assets/js/product.js"></script>
+<script src="/perfume-catalog/assets/js/product.js"></script>
 </body>
 </html>
