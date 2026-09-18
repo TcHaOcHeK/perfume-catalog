@@ -3,7 +3,7 @@
 $host = '127.0.0.1';
 $db   = 'perfume_db';
 $user = 'root';
-$pass = ''; // По умолчанию в XAMPP пароль пустой
+$pass = '904409';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

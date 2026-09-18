@@ -10,7 +10,17 @@ header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Подключение к БД
-require_once '../config/db.php';
+try {
+  require_once '../config/db.php';
+}
+catch (PDOException $e) {
+  http_response_code(500);
+  echo json_encode([
+    'success' => false,
+    'error' => 'DataBase connection lost' . $e->getMessage()
+  ]);
+}
+
 
 $productId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
