@@ -110,7 +110,7 @@
 
         <!-- Пользователь -->
         <div class="header__user">
-            <a href="/templates/login" class="user-btn" aria-label="Личный кабинет">
+            <a href="/perfume-catalog/login" class="user-btn" aria-label="Личный кабинет">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="8" r="4"></circle>
                     <path d="M12 14c-6 0-8 3-8 6v1h16v-1c0-3-2-6-8-6z"></path>

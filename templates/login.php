@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Авторизация и регистрация в парфюмерном каталоге">
     <title>Вход в систему | Парфюмерный каталог</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="stylesheet" href="/perfume-catalog/assets/css/style.css">
+    <link rel="icon" type="image/svg+xml" href="/perfume-catalog/assets/img/favicon.svg">
 </head>
 <body class="login-page">
 <main class="login-container">
     <div class="login-logo">
-        <img src="../assets/img/logo.svg" alt="Логотип парфюмерного каталога" class="logo-image">
+        <img src="/perfume-catalog/assets/img/logo.svg" alt="Логотип парфюмерного каталога" class="logo-image">
     </div>
 
     <div class="login-card">
-        <form class="login-form" action="auth.php" method="POST" id="loginForm">
+        <form class="login-form" action="auth" method="POST" id="loginForm">
             <div class="form-group">
                 <label for="login" class="form-label">Login</label>
                 <input
@@ -49,6 +49,6 @@
     </div>
 </main>
 
-<script src="js/login.js"></script>
+<script src="/perfume-catalog/assets/js/login.js"></script>
 </body>
 </html>
