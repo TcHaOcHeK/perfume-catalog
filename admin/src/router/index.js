@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 import Login from '@/views/Login.vue'
 import Dashboard from '@/views/Dashboard.vue'
@@ -8,100 +9,35 @@ import BrandsList from '@/views/BrandsList.vue'
 import CategoriesList from '@/views/CategoriesList.vue'
 import UsersList from '@/views/UsersList.vue'
 
+const protectedMeta = (title) => ({ requiresAuth: true, title })
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-
   routes: [
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: 'admin/dashboard',
-      name: 'dashboard',
-      component: Dashboard,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/products',
-      name: 'products',
-      component: ProductsList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/products/create',
-      name: 'product-create',
-      component: ProductForm,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/products/:id/edit',
-      name: 'product-edit',
-      component: ProductForm,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/brands',
-      name: 'brands',
-      component: BrandsList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/categories',
-      name: 'categories',
-      component: CategoriesList,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'admin/',
-      name: 'dashboard',
-      component:Dashboard,
-      meta: {
-        requiresAuth: true
-      }
-    }
+    { path: '/login', name: 'login', component: Login },
 
-  ],
+    { path: '/', name: 'dashboard', component: Dashboard, meta: protectedMeta('Dashboard') },
+    { path: '/products', name: 'products', component: ProductsList, meta: protectedMeta('Products') },
+    { path: '/products/create', name: 'product-create', component: ProductForm, meta: protectedMeta('New product') },
+    { path: '/products/:id/edit', name: 'product-edit', component: ProductForm, meta: protectedMeta('Edit product') },
+    { path: '/categories', name: 'categories', component: CategoriesList, meta: protectedMeta('Categories') },
+    { path: '/brands', name: 'brands', component: BrandsList, meta: protectedMeta('Brands') },
+    { path: '/users', name: 'users', component: UsersList, meta: protectedMeta('Users') },
+
+    { path: '/:pathMatch(.*)*', redirect: { name: 'dashboard' } }
+  ]
 })
 
-// Проверка авторизации перед переходом
+// Защита маршрутов: проверка наличия токена
 router.beforeEach((to) => {
+  const auth = useAuthStore()
 
-  const isAuthenticated =
-    Boolean(localStorage.getItem('accessToken'))
-
-  // Пользователь пытается открыть защищённую страницу
-  // без авторизации
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    return {
-      name: 'login',
-      query: {
-        redirect: to.fullPath
-      }
-    }
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return { name: 'login', query: { redirect: to.fullPath } }
   }
-
-  // Авторизованный пользователь пытается
-  // снова открыть страницу входа
-  if (to.name === 'login' && isAuthenticated) {
-    return {
-      name: 'dashboard'
-    }
+  if (to.name === 'login' && auth.isAuthenticated) {
+    return { name: 'dashboard' }
   }
 })
-
 
 export default router

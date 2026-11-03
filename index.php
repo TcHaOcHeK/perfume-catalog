@@ -6,8 +6,8 @@ $url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
 $url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
 $url = explode('/', $url);
 
-$entity = !empty($url) ? $url[0] : false;
-$page = !empty($url) ? $url[1] : false;
+$entity = $url[0] ?? '';
+$page = $url[1] ?? '';
 
 $entity = $entity != '' ? $entity : 'catalog';// переход на главную страницу
 $entity = (str_contains($entity, '.html')) ? str_replace('.html', '', $entity): $entity;

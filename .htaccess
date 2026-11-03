@@ -8,11 +8,17 @@ Options -Indexes
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1/$2 [R=301,L]
 
-# Если файл есть реально — отдаём его (картинки, стили)
+# Передаём заголовок Authorization в PHP (нужен для JWT)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# REST API: /api/... -> api/index.php
+RewriteRule ^api/index\.php$ - [L]
+RewriteRule ^api(/.*)?$ api/index.php [QSA,L]
+
+# Если файл или папка существуют — отдаём их как есть
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Всё остальное → отправляем в index.php
+# Всё остальное → index.php публичного сайта
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
-

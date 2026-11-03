@@ -1,25 +1,35 @@
 import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
 
-export default defineConfig({
-  plugins: [vue()],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const target = env.VITE_PROXY_TARGET || 'http://localhost:8080'
 
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
+  return {
+    // В production админка лежит в /perfume-catalog/admin/
+    base: mode === 'production' ? '/perfume-catalog/admin/' : '/',
 
-  server: {
-    port: 5173,
+    plugins: [vue()],
 
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080/perfume-catalog/admin',
-        changeOrigin: true
+    resolve: {
+      alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) }
+    },
+
+    server: {
+      port: 5173,
+      proxy: {
+        // REST API: /api/* -> /perfume-catalog/api/*
+        '/api': {
+          target,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '/perfume-catalog/api')
+        },
+        // Картинки товаров и прочая статика публичного сайта
+        '/perfume-catalog': {
+          target,
+          changeOrigin: true
+        }
       }
     }
   }
