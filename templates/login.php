@@ -15,7 +15,7 @@
     </div>
 
     <div class="login-card">
-        <form class="login-form" action="auth" method="POST" id="loginForm">
+        <form class="login-form" method="POST" id="loginForm">
             <div class="form-group">
                 <label for="login" class="form-label">Login</label>
                 <input
@@ -41,6 +41,8 @@
                     aria-required="true"
                 >
             </div>
+
+            <p id="loginError" class="form-error" role="alert" hidden></p>
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Register/Log in</button>

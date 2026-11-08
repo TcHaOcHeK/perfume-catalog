@@ -265,3 +265,14 @@ body {
     white-space: nowrap;
     border: 0;
 }
+
+/* Сообщение об ошибке на странице входа */
+.form-error {
+    margin: 0 0 12px;
+    color: #c0392b;
+    font-size: 14px;
+    text-align: center;
+}
+.form-error[hidden] {
+    display: none;
+}

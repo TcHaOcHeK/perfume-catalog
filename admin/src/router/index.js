@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { LOGIN_URL } from '@/services/api'
 
 import Login from '@/views/Login.vue'
 import Dashboard from '@/views/Dashboard.vue'
@@ -28,15 +29,44 @@ const router = createRouter({
   ]
 })
 
-// Защита маршрутов: проверка наличия токена
-router.beforeEach((to) => {
+// Куда вести неавторизованного: во внешнюю страницу входа (prod) или на Vue-логин (dev)
+function toLogin(redirect) {
+  if (LOGIN_URL) {
+    window.location.href = LOGIN_URL
+    return false
+  }
+  return { name: 'login', query: { redirect } }
+}
+
+// Защита маршрутов: наличие токена + роль admin/editor
+router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return { name: 'login', query: { redirect: to.fullPath } }
+  if (to.meta.requiresAuth) {
+    if (!auth.isAuthenticated) return toLogin(to.fullPath)
+
+    // Страницу перезагрузили: токен есть, профиля нет -> подтягиваем (и проверяем токен)
+    if (!auth.user) {
+      try {
+        await auth.fetchMe()
+      } catch {
+        auth.clearSession()
+        return toLogin(to.fullPath)
+      }
+    }
+
+    if (!auth.isStaff) {
+      auth.clearSession()
+      return toLogin(to.fullPath)
+    }
   }
-  if (to.name === 'login' && auth.isAuthenticated) {
-    return { name: 'dashboard' }
+
+  if (to.name === 'login') {
+    if (auth.isAuthenticated) return { name: 'dashboard' }
+    if (LOGIN_URL) {
+      window.location.href = LOGIN_URL
+      return false
+    }
   }
 })
 

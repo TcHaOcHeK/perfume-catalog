@@ -19,7 +19,7 @@ async function submit() {
     await auth.login(login.value, password.value)
     router.push(route.query.redirect || { name: 'dashboard' })
   } catch (e) {
-    error.value = e.response?.data?.error || 'Не удалось войти'
+    error.value = e.response?.data?.error || (e.isAxiosError ? 'Не удалось войти' : e.message)
   } finally {
     loading.value = false
   }

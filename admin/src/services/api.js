@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 const TOKEN_KEY = 'accessToken'
+// Куда отправлять неавторизованного: в prod — публичная страница входа, в dev — пусто (используем Vue-логин)
+export const LOGIN_URL = import.meta.env.VITE_LOGIN_URL || ''
 
 const api = axios.create({
   // dev: /api (проксируется Vite), prod: /perfume-catalog/api
@@ -22,7 +24,7 @@ api.interceptors.response.use(
     const isLoginRequest = error.config?.url === '/login'
     if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem(TOKEN_KEY)
-      window.location.href = `${import.meta.env.BASE_URL}login`
+      window.location.href = LOGIN_URL || `${import.meta.env.BASE_URL}login`
     }
     return Promise.reject(error)
   }
@@ -46,7 +48,8 @@ export const usersApi = createResource('users')
 
 export const authApi = {
   login: (login, password) => api.post('/login', { login, password }).then((r) => r.data),
-  logout: () => api.post('/logout').then((r) => r.data)
+  logout: () => api.post('/logout').then((r) => r.data),
+  me: () => api.get('/me').then((r) => r.data)
 }
 
 export const ping = () => api.get('/ping').then((r) => r.data)
