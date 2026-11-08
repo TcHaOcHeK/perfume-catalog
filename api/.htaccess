@@ -1,0 +1,34 @@
+# API .htaccess — маршрутизация всех запросов на index.php
+RewriteEngine On
+
+# Разрешаем прямые запросы к существующим файлам
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Все остальные запросы перенаправляем на index.php
+RewriteRule ^ index.php [QSA,L]
+
+# CORS заголовки для всех ответов
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+    
+    # Обработка preflight
+    Header always set Access-Control-Max-Age "86400"
+</IfModule>
+
+# Безопасность: запрет доступа к конфигам
+<Files "*.php">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</Files>
+
+# Запрет доступа к скрытым файлам
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</FilesMatch>
