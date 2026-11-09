@@ -1,0 +1,2126 @@
+{
+  "info": {
+    "name": "Perfume Catalog API (ПР8)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Перед запуском: создайте администратора (php sql/create_admin.php admin <пароль>) и задайте переменные username/password. Запускать Collection Runner целиком, по порядку."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/perfume-catalog/api"
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "password",
+      "value": "ВАШ_ПАРОЛЬ"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userToken",
+      "value": ""
+    },
+    {
+      "key": "adminId",
+      "value": ""
+    },
+    {
+      "key": "brandId",
+      "value": ""
+    },
+    {
+      "key": "categoryId",
+      "value": ""
+    },
+    {
+      "key": "familyId",
+      "value": ""
+    },
+    {
+      "key": "collectionId",
+      "value": ""
+    },
+    {
+      "key": "productId",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "editorId",
+      "value": ""
+    },
+    {
+      "key": "editorToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Публичные",
+      "item": [
+        {
+          "name": "GET /ping",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ping"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"pong\", () => pm.expect(pm.response.json().message).to.eql(\"pong\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"БД доступна\", () => pm.expect(pm.response.json().db).to.eql(\"ok\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Авторизация",
+      "item": [
+        {
+          "name": "POST /login — неверный пароль → 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{username}}\",\n  \"password\": \"wrong-password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /login — пустые поля → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"\",\n  \"password\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /login — успешный вход",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"есть токен и роль admin\", () => { pm.expect(j.token).to.be.a(\"string\"); pm.expect(j.user.role).to.eql(\"admin\"); });",
+                  "pm.collectionVariables.set(\"token\", j.token);",
+                  "pm.collectionVariables.set(\"adminId\", j.user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /me без токена → 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /me с поддельным токеном → 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "abc.def.ghi",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"тот же пользователь\", () => pm.expect(pm.response.json().user.username).to.eql(pm.collectionVariables.get(\"username\")));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Справочники",
+      "item": [
+        {
+          "name": "POST /brands",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brands",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тест ПР8 Бренд\",\n  \"description\": \"Временная запись для проверки API\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"brandId\", pm.response.json().item.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /brands — дубликат → 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brands",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тест ПР8 Бренд\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /brands — без name → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brands",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));",
+                  "pm.test(\"ошибка по полю name\", () => pm.expect(pm.response.json().errors.name).to.exist);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /categories",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тест ПР8 Категория\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"categoryId\", pm.response.json().item.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /families",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/families",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "families"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тест ПР8 Семейство\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"familyId\", pm.response.json().item.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /collections",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "collections"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тест ПР8 Коллекция\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"collectionId\", pm.response.json().item.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /brands?search=ПР8",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/brands?search=ПР8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "ПР8"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"найден тестовый бренд\", () => pm.expect(pm.response.json().total).to.be.at.least(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /brands/:id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brands/{{brandId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands",
+                "{{brandId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Обновлено\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /brands/:id — те же значения → 200 (не 404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/brands/{{brandId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands",
+                "{{brandId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Обновлено\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Товары",
+      "item": [
+        {
+          "name": "POST /products — без title → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand_id\": \"{{brandId}}\",\n  \"type_id\": \"{{categoryId}}\",\n  \"family_id\": \"{{familyId}}\",\n  \"collection_id\": \"{{collectionId}}\",\n  \"gender\": \"unisex\",\n  \"price\": 1990.5,\n  \"description\": \"Временный товар для проверки API\",\n  \"release_date\": \"2024-05-01\",\n  \"volume_ml\": 50,\n  \"is_featured\": true,\n  \"is_new\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products — неверный gender → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Тест ПР8 Товар\",\n  \"brand_id\": \"{{brandId}}\",\n  \"type_id\": \"{{categoryId}}\",\n  \"family_id\": \"{{familyId}}\",\n  \"collection_id\": \"{{collectionId}}\",\n  \"gender\": \"male\",\n  \"price\": 1990.5,\n  \"description\": \"Временный товар для проверки API\",\n  \"release_date\": \"2024-05-01\",\n  \"volume_ml\": 50,\n  \"is_featured\": true,\n  \"is_new\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products — отрицательная цена → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Тест ПР8 Товар\",\n  \"brand_id\": \"{{brandId}}\",\n  \"type_id\": \"{{categoryId}}\",\n  \"family_id\": \"{{familyId}}\",\n  \"collection_id\": \"{{collectionId}}\",\n  \"gender\": \"unisex\",\n  \"price\": -5,\n  \"description\": \"Временный товар для проверки API\",\n  \"release_date\": \"2024-05-01\",\n  \"volumes\": \"50, 100 ml\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Тест ПР8 Товар\",\n  \"brand_id\": \"{{brandId}}\",\n  \"type_id\": \"{{categoryId}}\",\n  \"family_id\": \"{{familyId}}\",\n  \"collection_id\": \"{{collectionId}}\",\n  \"gender\": \"unisex\",\n  \"price\": 1990.5,\n  \"description\": \"Временный товар для проверки API\",\n  \"release_date\": \"2024-05-01\",\n  \"volume_ml\": 50,\n  \"is_featured\": true,\n  \"is_new\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "const it = pm.response.json().item;",
+                  "pm.test(\"sku вида #00000012\", () => pm.expect(it.sku).to.match(/^#\\d{8}$/));",
+                  "pm.test(\"цена с копейками\", () => pm.expect(it.price).to.eql(\"1990.50\"));",
+                  "pm.collectionVariables.set(\"productId\", it.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"есть brand_name\", () => pm.expect(pm.response.json().item.brand_name).to.eql(\"Тест ПР8 Бренд\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /products/:id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 2500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"цена обновилась\", () => pm.expect(pm.response.json().item.price).to.eql(\"2500.00\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /products/:id — те же значения → 200 (не 404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 2500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products — фильтр бренд + цена от/до",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?brand={{brandId}}&priceFrom=2000&priceTo=3000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "brand",
+                  "value": "{{brandId}}"
+                },
+                {
+                  "key": "priceFrom",
+                  "value": "2000"
+                },
+                {
+                  "key": "priceTo",
+                  "value": "3000"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"товар найден\", () => pm.expect(pm.response.json().total).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products — priceFrom выше цены → пусто",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?brand={{brandId}}&priceFrom=3000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "brand",
+                  "value": "{{brandId}}"
+                },
+                {
+                  "key": "priceFrom",
+                  "value": "3000"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"ничего не найдено\", () => pm.expect(pm.response.json().total).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products — сортировка и пагинация",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?sort=price&order=asc&page=1&perPage=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "perPage",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"есть items и pages\", () => { const j = pm.response.json(); pm.expect(j.items).to.be.an(\"array\"); pm.expect(j.pages).to.be.a(\"number\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products?search=ПР8",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?search=ПР8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "ПР8"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /brands/:id — есть товары → 409",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/brands/{{brandId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands",
+                "{{brandId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"бренд не удалён каскадом\", () => pm.expect(pm.response.json().dependents).to.be.at.least(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/999999999 → 404",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/999999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "999999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/abc → 400",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "abc"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products без токена → 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /products/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/:id после удаления → 404",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Пользователи (только admin)",
+      "item": [
+        {
+          "name": "POST /users",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_test_user\",\n  \"email\": \"pr8_test_user@example.com\",\n  \"password\": \"test12345\",\n  \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 201\", () => pm.response.to.have.status(201));",
+                  "const it = pm.response.json().item;",
+                  "pm.test(\"хэш пароля не возвращается\", () => pm.expect(it).to.not.have.property(\"password_hash\"));",
+                  "pm.collectionVariables.set(\"userId\", it.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /users — короткий пароль → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_short\",\n  \"email\": \"pr8_short@example.com\",\n  \"password\": \"123\",\n  \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 422\", () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /users — дубликат логина → 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_test_user\",\n  \"email\": \"other@example.com\",\n  \"password\": \"test12345\",\n  \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"в списке нет password_hash\", () => pm.response.json().items.forEach(u => pm.expect(u).to.not.have.property(\"password_hash\")));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /users/:id — смена логина",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_test_user2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /login — вход новым пользователем (роль user)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_test_user2\",\n  \"password\": \"test12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"роль user\", () => pm.expect(pm.response.json().user.role).to.eql(\"user\"));",
+                  "pm.collectionVariables.set(\"userToken\", pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products обычным пользователем → 403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{userToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /users обычным пользователем → 403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{userToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /users/<свой id> → 403",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{adminId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{adminId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /users/<свой id> role=user → 403",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{adminId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{adminId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /users — роль editor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"pr8_editor\",\n  \"email\": \"pr8_editor@example.com\",\n  \"password\": \"test12345\",\n  \"role\": \"editor\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201 Created\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"editorId\", pm.response.json().item.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /login — editor",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"login\": \"pr8_editor\", \"password\": \"test12345\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"роль editor\", () => pm.expect(pm.response.json().user.role).to.eql(\"editor\"));",
+                  "pm.collectionVariables.set(\"editorToken\", pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products токеном editor → 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{editorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /users токеном editor → 403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{editorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /users/<editor>",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{editorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{editorId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /users/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Очистка тестовых данных",
+      "item": [
+        {
+          "name": "DELETE /brands/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/brands/{{brandId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "brands",
+                "{{brandId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /categories/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /families/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/families/{{familyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "families",
+                "{{familyId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /collections/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/collections/{{collectionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "collections",
+                "{{collectionId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Статус 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ onMounted(() => store.fetchAll())
     <p v-else-if="store.error" class="state state--error">{{ store.error }}</p>
     <p v-else-if="!store.items.length" class="state">Пока пусто</p>
     <ul v-else class="list">
-      <li v-for="item in store.items" :key="item.id" class="card">{{ item.title ?? item.name ?? item.login }}</li>
+      <li v-for="item in store.items" :key="item.id" class="card">{{ item.login }} ({{ item.role ?? 'user' }})</li>
     </ul>
   </AdminLayout>
 </template>
