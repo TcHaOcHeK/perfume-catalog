@@ -32,7 +32,7 @@ return (static function (): array {
                 . 'ff.`name` AS `family_name`, c.`name` AS `collection_name`, '
                 . '(SELECT pi.`image_path` FROM `product_images` pi '
                 . 'WHERE pi.`product_id` = p.`id` AND pi.`is_main` = 1 '
-                . 'ORDER BY pi.`sort_order`, pi.`id` LIMIT 1) AS `image`',
+                . 'ORDER BY pi.`is_main` DESC, pi.`id` LIMIT 1) AS `image`',
             'joins'  => 'LEFT JOIN `brands` b ON b.`id` = p.`brand_id` '
                 . 'LEFT JOIN `perfume_types` pt ON pt.`id` = p.`type_id` '
                 . 'LEFT JOIN `fragrance_families` ff ON ff.`id` = p.`family_id` '
